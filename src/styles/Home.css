@@ -1,0 +1,18 @@
+.home {
+    padding: 20px;
+  }
+  
+  .home-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .home-content ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .home-content li {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+  }

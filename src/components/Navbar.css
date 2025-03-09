@@ -1,0 +1,45 @@
+.hamburger {
+    display: none;
+}
+.navbar {
+    display: flex; /* Sử dụng Flexbox để xếp các phần tử theo hàng ngang */
+    justify-content: space-between; /* Logo bên trái, menu bên phải */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    background-color: white; /* Màu nền */
+    padding: 10px 20px; /* Khoảng cách bên trong */
+    color: white; /* Màu chữ */
+}
+.navbar-menu {
+    display: flex; /* Các item trong menu nằm ngang */
+    list-style: none; /* Xóa dấu chấm đầu dòng */
+    margin: auto;
+    padding: auto;
+    gap: 200px; /* Khoảng cách giữa các item */
+    
+
+}
+.navbar-logo{
+    width: 100px;
+    border-radius: 45%;
+}
+
+  
+  @media (max-width: 768px) {
+    .hamburger {
+      display: block;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: white;
+    }
+  
+    
+  
+    .navbar-menu.open {
+      display: flex;
+    }
+  
+    .navbar-menu li {
+      margin: 10px 0;
+    }
+  }
