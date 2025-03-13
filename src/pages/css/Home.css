@@ -6,13 +6,11 @@
     text-align: center;
     margin-bottom: 20px;
   }
-  
-  .home-content ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .home-content li {
-    border-bottom: 1px solid #ccc;
-    padding: 10px 0;
-  }
+.home-main{
+  width: 100%;
+}
+.poster{
+  height: 400px;
+  width: 90%;
+  margin-left: 5%;
+}

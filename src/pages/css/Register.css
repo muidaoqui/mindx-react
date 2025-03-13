@@ -1,0 +1,84 @@
+/* Container chính */
+.register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+  }
+  
+  /* Form tổng */
+  .register-form {
+    display: flex;
+    width: 800px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    
+  }
+  
+  /* Bên trái - Form đăng ký */
+  .register-title {
+    flex: 2;
+    padding: 40px;
+    background-color: white;
+  }
+  .register-link{
+    background-color: red;
+    font-size: 24px;
+    color: #333;
+    width: 400px;
+  }
+  .register-title h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+    
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+  }
+  input{
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+
+  }
+  button.bt{
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+  }
+  .logo{
+    width: 150px;
+    border-radius: 45%;
+    height: 150px;
+    margin-left: 30%;
+    margin-top: 100px;
+  }
+  h3{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+    text-align: center;
+  }
+  h5{
+    font-family: Arial, sans-serif, inherit;
+    color: white;
+    text-align: center;
+  }
