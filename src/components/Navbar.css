@@ -1,28 +1,103 @@
 .hamburger {
-    display: none;
+  display: none;
+}
+.navbar-brand{
+  width: 100%;
+  display: flex;
+  text-align: center;
+  color: red;
+  width: 100%;
+}
+.brand{
+  margin-top: 20px;
+  width: 68%;
+  font-size: 50px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.sreach{
+  float: right;
+  margin-top: 30px;
+}
+.input{
+  height: 30px;
+  border-radius: 30px;
+}
+.gh{
+  float: right;
+  margin-left: 30px;
+  height: 30px;
+  border-radius: 30px;
+  margin-top: 40px;
+}
+.us{
+  float: right;
+  margin-left: 30px;
+  height: 30px;
+  border-radius: 30px;
+  margin-top: 40px;
+}
+i{
+  color: red;
+}
+button{
+  background-color: rgb(189, 22, 22);
+  color: white;
+  border-radius: 30px;
+  height: 40px;
+  width: 40px;
 }
 .navbar {
+  position: relative;
     display: flex; /* Sử dụng Flexbox để xếp các phần tử theo hàng ngang */
     justify-content: space-between; /* Logo bên trái, menu bên phải */
     align-items: center; /* Căn giữa theo chiều dọc */
-    background-color: white; /* Màu nền */
+    background-color: rgb(46, 51, 54) ; /* Màu nền */
     padding: 10px 20px; /* Khoảng cách bên trong */
     color: white; /* Màu chữ */
+    border-radius: 10%;
 }
 .navbar-menu {
-    display: flex; /* Các item trong menu nằm ngang */
-    list-style: none; /* Xóa dấu chấm đầu dòng */
-    margin: auto;
-    padding: auto;
-    gap: 200px; /* Khoảng cách giữa các item */
-    
+  border-radius: 10%;
 
+  position: absolute;
+  top: 100%; /* Hiển thị ngay bên dưới navbar */
+  left: 0;
+  right: 0;
+  background-color: red;
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+  display: none;
+  opacity: 0;
+  transform: translateY(-20px); /* Hiệu ứng bắt đầu từ trên xuống */
+  transition: all 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 .navbar-logo{
-    width: 100px;
-    border-radius: 45%;
+    width: 150px;
+    border-radius: 20%;
+    height: 100px;
 }
-
+.navbar:hover .navbar-menu {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0); /* Trượt xuống */
+}
+.navbar-menu li {
+  padding: 10px 20px;
+  
+}
+.navbar-menu li a {
+  color: #fff;
+  text-decoration: none;
+  gap: 100px;
+}
+.navbar-menu li a:hover {
+  color: rgb(231, 242, 13);
+}
   
   @media (max-width: 768px) {
     .hamburger {

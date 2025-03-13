@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar'; // Import component Navbar
-import '../styles/Home.css'; // File CSS
+import Navbar from '../../components/Navbar'; // Import component Navbar
+import '../css/Home.css'; // File CSS
 
 function Home() {
   // State để quản lý dữ liệu động (ví dụ: danh sách bài viết)
    // Mảng rỗng nghĩa là chỉ chạy một lần khi component mount
-
+  
   return (
     <div className="home">
       <header className="home-header">
