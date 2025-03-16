@@ -20,13 +20,15 @@
 }
 .hot-list{
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   border: 1px solid #ddd ;
   border-radius: 10px;
-  height: 220px;
-  gap: 20px;
-  background-color: antiquewhite;
+  height: 280px;
+}
+.hot-item{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  background-color: aliceblue;
 }
 
 .hot-img{
@@ -37,4 +39,26 @@
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   cursor: pointer;
   
+}
+
+.h3{
+  color: red;
+  text-align: left;
+}
+
+.check{
+  margin-top: 30px;
+}
+.check-list{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  background-color: white;
+}
+.check-select{
+  width: 200px;
+  height: 50px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
