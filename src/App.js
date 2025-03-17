@@ -13,8 +13,8 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        
+        <Route path="/" element={<Register />} />
+        <Route path="/" element={<Login />} />
       </Routes>
     </Router>
   );
