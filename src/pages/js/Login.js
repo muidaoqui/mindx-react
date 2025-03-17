@@ -35,7 +35,7 @@ function Login() {
             
             // Chuyển hướng sau khi đăng nhập thành công
             setTimeout(() => {
-                navigate('/Home'); // Chuyển về trang chủ hoặc bất kỳ trang nào bạn muốn
+                navigate('/home'); // Chuyển về trang chủ hoặc bất kỳ trang nào bạn muốn
             }, 1000);
         } else {
             setMessage('Email hoặc mật khẩu không đúng.');
@@ -74,7 +74,7 @@ function Login() {
                         <button type="submit" className="bt">Login</button>
                         <p style={{ color: msgColor }}>{message}</p>
 
-                        <p>Chưa có tài khoản? <Link to="http://localhost:3000/Register">Đăng ký</Link></p>
+                        <p>Chưa có tài khoản? <Link to="/Register">Đăng ký</Link></p>
                     </form>
                 </div>
             </div>

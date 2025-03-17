@@ -87,7 +87,7 @@ function Register() {
 
                         <button type="submit" className="bt">Đăng ký</button>
                         <p style={{ color: msgColor }}>{message}</p>
-                        <p>Bạn đã có tài khoản? <Link to="http://localhost:3000/Login">Đăng nhập</Link></p>
+                        <p>Bạn đã có tài khoản? <Link to="/Login">Đăng nhập</Link></p>
                     </form>
                 </div>
 
