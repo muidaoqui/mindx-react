@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/Login.css';
 import logo from '../../img/logo.png';
-import './Register';
-import './Home';
+
 function Login() {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
@@ -14,7 +13,7 @@ function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const localUser = JSON.parse(localStorage.getItem('user'));
+        let users = JSON.parse(localStorage.getItem('users')) || []; // Đọc danh sách users từ localStorage
 
         if (!email || !pass) {
             setMessage('Vui lòng điền đầy đủ thông tin.');
@@ -22,26 +21,22 @@ function Login() {
             return;
         }
 
-        if (!localUser) {
-            setMessage('Tài khoản không tồn tại.');
-            setMsgColor('red');
-            return;
-        }
+        // Tìm user có email & pass trùng khớp
+        let foundUser = users.find(user => user.email === email && user.pass === pass);
 
-        if (localUser.email === email && localUser.pass === pass) {
+        if (foundUser) {
             setMessage('Đăng nhập thành công!');
             setMsgColor('green');
-            localStorage.setItem('islogin', true);
-            
-            // Chuyển hướng sau khi đăng nhập thành công
+            localStorage.setItem('islogin', true); // Lưu trạng thái đăng nhập
+
             setTimeout(() => {
-                navigate('/home'); // Chuyển về trang chủ hoặc bất kỳ trang nào bạn muốn
+                navigate('/home'); // Chuyển hướng về trang chủ sau 1s
             }, 1000);
         } else {
             setMessage('Email hoặc mật khẩu không đúng.');
             setMsgColor('red');
         }
-    }
+    };
 
     return (
         <div className="login">
@@ -74,7 +69,7 @@ function Login() {
                         <button type="submit" className="bt">Login</button>
                         <p style={{ color: msgColor }}>{message}</p>
 
-                        <p>Chưa có tài khoản? <Link to="/Register">Đăng ký</Link></p>
+                        <p>Chưa có tài khoản? <Link to="/register">Đăng ký</Link></p>
                     </form>
                 </div>
             </div>

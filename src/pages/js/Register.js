@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Thêm useNavigate để chuyển trang
 import '../css/Register.css';
 import logo from '../../img/logo.png';
-import './Login';
 
 function Register() {
     const [fullname, setFullname] = useState('');
@@ -11,12 +10,12 @@ function Register() {
     const [confPass, setConfPass] = useState('');
     const [message, setMessage] = useState('');
     const [msgColor, setMsgColor] = useState('red');
+    const navigate = useNavigate(); // Dùng để chuyển hướng sau khi đăng ký thành công
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Kiểm tra dữ liệu
-        if (!fullname.trim() || !email.trim() || !pass.trim() || !confPass.trim()) {
+        if (!fullname || !email || !pass || !confPass) {
             setMessage("Vui lòng điền đầy đủ thông tin.");
             setMsgColor('red');
             return;
@@ -28,23 +27,29 @@ function Register() {
             return;
         }
 
-        const checkEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!checkEmail.test(email)) {
-            setMessage("Email không hợp lệ.");
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        if (users.find(user => user.email === email)) {
+            setMessage("Email đã tồn tại.");
             setMsgColor('red');
             return;
         }
 
-        const user = { fullname, email, pass };
-        localStorage.setItem('user', JSON.stringify(user));
+        users.push({ fullname, email, pass }); // Lưu thông tin người dùng
+        localStorage.setItem("users", JSON.stringify(users));
 
         setMessage("Đăng ký thành công!");
         setMsgColor('green');
 
+        // Reset form sau khi đăng ký thành công
         setFullname('');
         setEmail('');
         setPass('');
         setConfPass('');
+
+        // Chuyển hướng sang trang đăng nhập sau 1.5 giây
+        setTimeout(() => {
+            navigate('/Login');
+        }, 1500);
     };
 
     return (
