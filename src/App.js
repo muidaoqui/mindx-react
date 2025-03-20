@@ -8,18 +8,39 @@ import Register from './pages/js/Register';
 import Login from './pages/js/Login';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import UserList from './pages/js/UserList';
+import CarList from './pages/js/CarList';
 function App() {
   return (
     <Router>
+      {/* Ẩn Navbar trên Login và Register */}
+      {window.location.pathname !== "/login" && window.location.pathname !== "/register" && <Navbar />}
+
       <Routes>
-        <Route path="/" element={<Register />} />
+        {/* Trang đăng ký */}
+        <Route path="/register" element={<Register />} />
+
+        {/* Trang đăng nhập */}
         <Route path="/login" element={<Login />} />
-        <Route path="/user-list" element={<UserList />} /> {/* Thêm route này */}
+
+        {/* Trang chủ */}
+        <Route path="/home" element={<Home />} />
+
+        {/* Trang giới thiệu về Toyota */}
+        <Route path="/about" element={<About />} />
+
+        {/* Trang liên hệ (Rolls-Royce) */}
+        <Route path="/contact" element={<Contact />} />
+
+        {/* Chuyển hướng mặc định */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/user-list" element={<UserList/>} />
+        <Route path="/car-list" element={<CarList/>} />
+
+        <Route path="*" element={<h2>404 - Page Not Found</h2>} />
+
       </Routes>
     </Router>
   );
 }
 
 export default App;
-
-
