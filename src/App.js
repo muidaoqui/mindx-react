@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Navbar from './components/Navbar';
 import Home from './pages/js/Home';
 import About from './pages/js/Toyota';
-import Contact from './pages/js/Rolls-Royce';
 import Register from './pages/js/Register';
 import Login from './pages/js/Login';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import UserList from './pages/js/UserList';
 import CarList from './pages/js/CarList';
+import Shopping from './pages/js/Shopping';
 function App() {
   return (
     <Router>
@@ -28,14 +28,12 @@ function App() {
         {/* Trang giới thiệu về Toyota */}
         <Route path="/about" element={<About />} />
 
-        {/* Trang liên hệ (Rolls-Royce) */}
-        <Route path="/contact" element={<Contact />} />
 
         {/* Chuyển hướng mặc định */}
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/user-list" element={<UserList/>} />
         <Route path="/car-list" element={<CarList/>} />
-
+        <Route path="/shopping-cart" element={<Shopping/>} />
         <Route path="*" element={<h2>404 - Page Not Found</h2>} />
 
       </Routes>
