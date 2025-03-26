@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/js/Home';
-import About from './pages/js/Toyota';
+import Volvo from './pages/js/Volvo';
 import Register from './pages/js/Register';
 import Login from './pages/js/Login';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -28,7 +28,7 @@ function App() {
         <Route path="/home" element={<Home />} />
 
         {/* Trang giới thiệu về Toyota */}
-        <Route path="/about" element={<About />} />
+        <Route path="/volvo" element={<Volvo />} />
 
 
         {/* Chuyển hướng mặc định */}

@@ -50,7 +50,7 @@ function Navbar() {
         }`}
       >
         {[
-          { name: "Toyota", link: "/toyota" },
+          { name: "Volvo", link: "/volvo" },
           { name: "Mercedes", link: "/mercedes" },
           { name: "BMW", link: "/bmw" },
           { name: "Rolls-Royce", link: "/rolls-royce" },
