@@ -9,12 +9,14 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import UserList from './pages/js/UserList';
 import CarList from './pages/js/CarList';
 import Shopping from './pages/js/Shopping';
+import Mercedes from './pages/js/Mercedes';
+import Footer from './components/Footer';
 function App() {
   return (
     <Router>
       {/* Ẩn Navbar trên Login và Register */}
       {window.location.pathname !== "/login" && window.location.pathname !== "/register" && <Navbar />}
-
+      
       <Routes>
         {/* Trang đăng ký */}
         <Route path="/register" element={<Register />} />
@@ -34,9 +36,11 @@ function App() {
         <Route path="/user-list" element={<UserList/>} />
         <Route path="/car-list" element={<CarList/>} />
         <Route path="/shopping-cart" element={<Shopping/>} />
+        <Route path="/mercedes" element={<Mercedes/>} />
         <Route path="*" element={<h2>404 - Page Not Found</h2>} />
 
       </Routes>
+      {window.location.pathname !== "/login" && window.location.pathname !== "/register" && <Footer />}
     </Router>
   );
 }

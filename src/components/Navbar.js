@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import logo from "../img/logo.png";
-
+import Mercedes from '../pages/js/Mercedes';
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -50,21 +50,21 @@ function Navbar() {
         }`}
       >
         {[
-          "Toyota",
-          "Mercedes",
-          "BMW",
-          "Rolls-Royce",
-          "Vinfast",
-          "Tesla",
-          "Lexus",
-          "Audi",
-          "Maserati",
-          "Phụ Kiện",
-          "Tin Tức",
+          { name: "Toyota", link: "/toyota" },
+          { name: "Mercedes", link: "/mercedes" },
+          { name: "BMW", link: "/bmw" },
+          { name: "Rolls-Royce", link: "/rolls-royce" },
+          { name: "Vinfast", link: "/vinfast" },
+          { name: "Tesla", link: "/tesla" },
+          { name: "Lexus", link: "/lexus" },
+          { name: "Audi", link: "/audi" },
+          { name: "Maserati", link: "/maserati" },
+          { name: "Phụ Kiện", link: "/phu-kien" },
+          { name: "Tin Tức", link: "/tin-tuc" },
         ].map((item) => (
-          <li key={item} className="py-2 md:py-0">
-            <a href="#" className="hover:text-cyan-300 bg-gradient-to-r from-gray-100 to-yellow-300 bg-clip-text text-transparent transition duration-300">
-              {item}
+          <li key={item.name} className="py-2 md:py-0">
+            <a href={item.link} className="hover:text-cyan-300 bg-gradient-to-r from-gray-100 to-yellow-300 bg-clip-text text-transparent transition duration-300">
+              {item.name}
             </a>
           </li>
         ))}
