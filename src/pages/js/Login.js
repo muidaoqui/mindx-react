@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../css/Login.css';
 import logo from '../../img/logo.png';
 
 function Login() {
@@ -39,19 +38,19 @@ function Login() {
     };
 
     return (
-        <div className="login">
-            <div className="login-form">
-                <div className="login-link">
-                    <img src={logo} className="logo" alt="Logo" />
-                    <h3>AUTOHUNT</h3>
+        <div className="w-full flex justify-center  h-screen">
+            <div className="flex my-auto w-full max-w-2xl overflow-hidden rounded-xl shadow-lg h-1/2">
+                <div className="bg-red-600 w-full h-full flex flex-col align-center justify-center rounded-l-xl  gap-6">
+                    <h1 className="font-mono text-3xl font-bold text-center  text-cyan-300">Đăng Nhập</h1>
+                    <img src={logo} className="w-20 mx-auto rounded-xl"/>
+                    <h3>MD AUTOHUNT</h3>
                     <h5>Nơi giấc mơ bốn bánh khởi đầu!</h5>
                 </div>
 
-                <div className="login-title">
-                    <h2>Đăng nhập</h2>
-                    <form onSubmit={handleSubmit}>
+                <div  className=" flex flex-col w-full h-full align-center justify-center border border-gray-300 rounded-r-xl">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4 mx-6 ">
                         <label>Email</label>
-                        <input
+                        <input className="bg-white-500 h-10"
                             type="email"
                             placeholder="Nhập email"
                             value={email}
@@ -59,17 +58,17 @@ function Login() {
                         />
 
                         <label>Mật khẩu</label>
-                        <input
+                        <input className="bg-white-500 h-10"
                             type="password"
                             placeholder="Nhập mật khẩu"
                             value={pass}
                             onChange={(e) => setPass(e.target.value)}
                         />
 
-                        <button type="submit" className="bt">Login</button>
+                        <button type="submit" className="bg-red-600 border rounded-lg h-10 text-white font-bold">Đăng Nhập</button>
                         <p style={{ color: msgColor }}>{message}</p>
 
-                        <p>Chưa có tài khoản? <Link to="/register">Đăng ký</Link></p>
+                        <p>Chưa có tài khoản? <Link to="/register" className="text-cyan-300">Đăng ký</Link></p>
                     </form>
                 </div>
             </div>
