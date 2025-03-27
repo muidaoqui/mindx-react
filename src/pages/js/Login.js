@@ -41,16 +41,17 @@ function Login() {
         <div className="w-full flex justify-center  h-screen">
             <div className="flex my-auto w-full max-w-2xl overflow-hidden rounded-xl shadow-lg h-1/2">
                 <div className="bg-red-600 w-full h-full flex flex-col align-center justify-center rounded-l-xl  gap-6">
-                    <h1 className="font-mono text-3xl font-bold text-center  text-cyan-300">Đăng Nhập</h1>
+                    
                     <img src={logo} className="w-20 mx-auto rounded-xl"/>
-                    <h3>MD AUTOHUNT</h3>
-                    <h5>Nơi giấc mơ bốn bánh khởi đầu!</h5>
+                    <h3 className="text-xl text-center">MD AUTOHUNT</h3>
+                    <h5 className="text-center">Nơi giấc mơ bốn bánh khởi đầu!</h5>
                 </div>
 
                 <div  className=" flex flex-col w-full h-full align-center justify-center border border-gray-300 rounded-r-xl">
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-4 mx-6 ">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-2 mx-6 ">
+                        <h1 className="font-mono text-3xl font-bold text-center mt-6 text-red-500">Đăng Nhập</h1>
                         <label>Email</label>
-                        <input className="bg-white-500 h-10"
+                        <input className="bg-white-500 h-8 border rounded-lg"
                             type="email"
                             placeholder="Nhập email"
                             value={email}
@@ -58,7 +59,7 @@ function Login() {
                         />
 
                         <label>Mật khẩu</label>
-                        <input className="bg-white-500 h-10"
+                        <input className="bg-white-500 h-8 border rounded-lg"
                             type="password"
                             placeholder="Nhập mật khẩu"
                             value={pass}

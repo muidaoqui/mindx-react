@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Thêm useNavigate để chuyển trang
-import '../css/Register.css';
 import logo from '../../img/logo.png';
 
 function Register() {
@@ -53,13 +52,14 @@ function Register() {
     };
 
     return (
-        <div className="register">
-            <div className="register-form">
-                <div className="register-title">
-                    <h2>Đăng ký</h2>
-                    <form onSubmit={handleSubmit}>
+        <div className=" w-full flex justify-center  h-screen">
+            <div className="flex my-auto w-full max-w-2xl overflow-hidden rounded-xl shadow-lg h-2/3">
+                <div className="flex flex-col w-full h-full align-center justify-center border border-gray-300 rounded-l-xl">
+                    
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-2 mx-6">
+                        <h2 className="font-mono text-3xl font-bold text-center mt-6 text-red-500">Đăng ký</h2>
                         <label>Họ và tên</label>
-                        <input 
+                        <input className="bg-white-500 h-8 border rounded-lg" 
                             type="text" 
                             placeholder="Nhập họ và tên"
                             value={fullname}
@@ -67,7 +67,7 @@ function Register() {
                         />
 
                         <label>Email</label>
-                        <input 
+                        <input className="bg-white-500 h-8 border rounded-lg" 
                             type="email" 
                             placeholder="Nhập email" 
                             value={email}
@@ -75,7 +75,7 @@ function Register() {
                         />
 
                         <label>Mật khẩu</label>
-                        <input 
+                        <input className="bg-white-500 h-8 border rounded-lg" 
                             type="password" 
                             placeholder="Nhập mật khẩu"
                             value={pass}
@@ -83,23 +83,23 @@ function Register() {
                         />
 
                         <label>Nhập lại mật khẩu</label>
-                        <input 
+                        <input className="bg-white-500 h-8 border rounded-lg" 
                             type="password" 
                             placeholder="Nhập lại mật khẩu"
                             value={confPass}
                             onChange={(e) => setConfPass(e.target.value)}
                         />
 
-                        <button type="submit" className="bt">Đăng ký</button>
+                        <button type="submit" className="bg-red-600 border rounded-lg h-10 text-white font-bold">Đăng ký</button>
                         <p style={{ color: msgColor }}>{message}</p>
-                        <p>Bạn đã có tài khoản? <Link to="/Login">Đăng nhập</Link></p>
+                        <p>Bạn đã có tài khoản? <Link to="/Login" className="text-cyan-300">Đăng nhập</Link></p>
                     </form>
                 </div>
 
-                <div className="register-link">
-                    <img src={logo} className="logo" alt="Logo" />
-                    <h3>AUTOHUNT</h3>
-                    <h5>Nơi giấc mơ bốn bánh khởi đầu!</h5>
+                <div className="bg-red-600 w-full h-full flex flex-col align-center justify-center rounded-r-xl  gap-6">
+                    <img src={logo} className="w-20 mx-auto rounded-xl" alt="Logo" />
+                    <h3 className="text-xl text-center">AUTOHUNT</h3>
+                    <h5 className="text-center">Nơi giấc mơ bốn bánh khởi đầu!</h5>
                 </div>
             </div>
         </div>
