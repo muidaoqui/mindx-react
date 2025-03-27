@@ -1,10 +1,10 @@
 import logo from '../../img/volvo/logo.jpg'
-
+import {xc40, xc60, xc90, ec40, s90} from '../../img/volvo/index.js';
 function Volvo() {
   return (
-    <div className="font-sans">
-        <div className="flex justify-center my-10">
-          <img src={logo} alt="Logo Volvo" className=" w-32"/>
+    <div className="font-sans mb-10">
+        <div className="flex justify-center my-16">
+          <img src={logo} alt="Logo Volvo" className=" w-20"/>
         </div>
         <div className="flex justify-between mx-20">
             <div>
@@ -30,22 +30,42 @@ function Volvo() {
           </button>
         </div>
         <div>
-          <div className="grid grid-cols-3 gap-4 mx-20">
-            <div className="border-1 text-center text-lg text-black border-black ">
-              <img src="{cclass}" alt=""/>
-              <h2 className="text-black">Mercedes-Benz C-Class</h2>
-              <h3 className="text-black">Giá từ 1,2 tỷ</h3>
+          <h1 className="text-xl font-bold mx-20 my-10">SUV</h1>
+          <div className="grid grid-cols-3 gap-4 mx-20 ">
+            
+            <div className="border-1 text-lg text-black border-black ">
+              <img src={xc40} alt="" className="mb-10 bg-red-100 h-auto w-full"/>
+              <h2 className="text-black">XC40</h2>
+              <h3 className="text-black">Mild hybrid</h3>
             </div>                        
-            <div className="border-1 text-center text-lg text-black border-black ">
-              <img src="{cclass}" alt=""/>
-              <h2 className="text-black">Mercedes-Benz C-Class</h2>
-              <h3 className="text-black">Giá từ 1,2 tỷ</h3>
+            <div className="border-1 text-lg text-black border-black ">
+              <img src={xc60} alt="" className="mb-10 bg-red-100 h-auto w-full"/>
+              <h2 className="text-black">XC60</h2>
+              <h3 className="text-black">Mild hybrid</h3>
             </div> 
-            <div className="border-1 text-center text-lg text-black border-black ">
-              <img src="{cclass}" alt=""/>
-              <h2 className="text-black">Mercedes-Benz C-Class</h2>
-              <h3 className="text-black">Giá từ 1,2 tỷ</h3>
+            <div className="border-1 text-lg text-black border-black ">
+              <img src={xc90} alt="" className="mb-10 bg-red-100 h-auto w-full"/>
+              <h2 className="text-black">XC90</h2>
+              <h3 className="text-black">Mild hybrid</h3>
             </div> 
+          </div>
+          <h1 className="text-xl font-bold mx-20 my-10">Crossover</h1>
+          <div className="grid grid-cols-3 gap-4 mx-20 ">
+            
+            <div className="border-1 text-lg text-black border-black ">
+              <img src={ec40} alt="" className="mb-10 bg-red-100 h-auto w-full"/>
+              <h2 className="text-black">EC40</h2>
+              <h3 className="text-black">Electric</h3>
+            </div>                        
+          </div>
+          <h1 className="text-xl font-bold mx-20 my-10">Sedans</h1>
+          <div className="grid grid-cols-3 gap-4 mx-20 ">
+            
+            <div className="border-1 text-lg text-black border-black ">
+              <img src={s90} alt="" className="mb-10 bg-red-100 h-auto w-full"/>
+              <h2 className="text-black">S90</h2>
+              <h3 className="text-black">Mild hybrid</h3>
+            </div>                        
           </div>
         </div>
     </div>
