@@ -1,7 +1,13 @@
 import logo from '../../img/mec/logo.jpg'
 import {cclass, eclass, sclass, glc, gle, gls, maysclass, maygls, g63} from '../../img/mec/index'
-
+import {React, useEffect, useState} from 'react';
+import CarList from './CarList';
 function Mercedes() {
+    const [cars, setCars] = useState([]);
+    useEffect(() => {
+        const storedCars = JSON.parse(localStorage.getItem("cars")) || [];
+        setCars(storedCars);
+    }, []);
   return (
     <div className="font-serif">
         <div className="my-10 flex flex-col items-center">
@@ -41,43 +47,16 @@ function Mercedes() {
                     Điện
                 </button>
             </div>
-            <div className="w-full">
-                <div class="flex-grow border-t border-gray-400"></div>
-                <h1 className="text-center text-xl my-4">All</h1>
-                <div class="flex-grow border-t border-gray-400 mb-4"></div>
-                <div className="grid grid-cols-2 w-full justify-items-center gap-4">
-                    <div className="border-1 text-center text-lg text-black border-black ">
-                        <img src={cclass} alt=""/>
-                        <h2 className="text-black">Mercedes-Benz C-Class</h2>
-                        <h3 className="text-black">Giá từ 1,2 tỷ</h3>
+            <div className="grid grid-cols-2 gap-20 mx-32 my-10">
+                {cars
+                .filter(car => car.carbrand === "Mercedes-Benz")
+                .map((car, index) => (
+                    <div key={index} className="border border-gray-400 p-4 text-center rounded-lg shadow-lg">
+                        <img src={car.carImage} alt={car.carname} className="w-full h-48 object-cover rounded-md"/>
+                        <h2 className="text-black text-lg font-semibold mt-2">{car.carname}</h2>
+                        <h3 className="text-gray-700">Giá từ {car.carprice} tỷ</h3>
                     </div>
-                    <div className="border-1 text-center text-lg text-black border-black ">
-                        <img src={eclass} alt=""/>
-                        <h2 className="text-black">Mercedes-Benz E-Class</h2>
-                        <h3 className="text-black">Giá từ 1,5 tỷ</h3>
-                    </div>
-                    <div className="border-1 text-center text-lg text-black border-black ">
-                        <img src={sclass} alt=""/>
-                        <h2 className="text-black">Mercedes-Benz S-Class</h2>
-                        <h3 className="text-black">Giá từ 1,8 tỷ</h3>
-                    </div>
-                    <div className="border-1 text-center text-lg text-black text- border-black ">
-                        <img src={glc} alt=""/>
-                        <h2 className="text-black">Mercedes-Benz GLC</h2>
-                        <h3 className="text-black">Giá từ 2,5 tỷ</h3>
-                    </div>
-                    <div className="border-1 text-center text-lg text-black text- border-black ">
-                        <img src={gle} alt=""/>
-                        <h2 className="text-black">Mercedes-Benz GLE</h2>
-                        <h3 className="text-black">Giá từ 2,3 tỷ</h3>
-                    </div>
-                    <div className="border-1 text-center text-lg text-black text- border-black ">
-                        <img src={gls} alt=""/>
-                        <h2 className="text-black">Mercedes-Benz GLS</h2>
-                        <h3 className="text-black">Giá từ 3,5 tỷ</h3>
-                    </div>
-                    
-                </div>
+                ))}
             </div>
         </div>
     </div>

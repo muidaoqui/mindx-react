@@ -47,7 +47,7 @@ function Register() {
 
         // Chuyển hướng sang trang đăng nhập sau 1.5 giây
         setTimeout(() => {
-            navigate('/Login');
+            navigate('/login');
         }, 1500);
     };
 

@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import "../css/Admin.css";
 
 function CarList() {
     const [cars, setCars] = useState([]);
@@ -80,24 +79,28 @@ function CarList() {
         }
     };
     return (
-        <div className="container">
-            <h1>Car List</h1>
+        <div className="w-full h-full mb-10">
+            <h1 className="text-center font-bold text-2xl my-10 text-cyan-500">Quản Lý Xe</h1>
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="ID" value={carid} onChange={(e) => setCarid(e.target.value)} />
-                <input type="text" placeholder="Name" value={carname} onChange={(e) => setCarname(e.target.value)} />
-                <input type="text" placeholder="Model" value={carmodel} onChange={(e) => setCarmodel(e.target.value)} />
-                <input type="text" placeholder="Price" value={carprice} onChange={(e) => setCarprice(e.target.value)} />
-                <input type="text" placeholder="Seats" value={carseats} onChange={(e) => setCarseats(e.target.value)} />
-                <input type="text" placeholder="Brand" value={carbrand} onChange={(e) => setCarbrand(e.target.value)} />
-                <input type="file" accept="image/*" onChange={handleImageUpload} />
+                <input className="border-2 border-black rounded-xl h-10 p-2" type="text" placeholder="ID" value={carid} onChange={(e) => setCarid(e.target.value)} />
+                <input className="border-2 border-black rounded-xl h-10 p-2" type="text" placeholder="Name" value={carname} onChange={(e) => setCarname(e.target.value)} />
+                <input className="border-2 border-black rounded-xl h-10 p-2" type="text" placeholder="Model" value={carmodel} onChange={(e) => setCarmodel(e.target.value)} />
+                <input className="border-2 border-black rounded-xl h-10 p-2" type="text" placeholder="Price" value={carprice} onChange={(e) => setCarprice(e.target.value)} />
+                <input className="border-2 border-black rounded-xl h-10 p-2" type="text" placeholder="Seats" value={carseats} onChange={(e) => setCarseats(e.target.value)} />
+                <input className="border-2 border-black rounded-xl h-10 p-2" type="text" placeholder="Brand" value={carbrand} onChange={(e) => setCarbrand(e.target.value)} />
+                <input className="border-2 border-black rounded-xl h-10 p-2" type="file" accept="image/*" onChange={handleImageUpload} />
 
                 {carImage && <img src={carImage} alt="Car Preview" width="100" />}
 
-                <button type="submit">{editingIndex !== null ? "Update" : "Add"}</button>
+                <div className="flex justify-end mt-4">
+                    <button type="submit" className="border-2 border-black rounded-xl h-10 py-2 w-20 bg-green-500 font-bold mr-4">{editingIndex !== null ? "Cập nhật" : "Thêm" }</button>
+                    {editingIndex !== null && <button type="button" className="border-2 border-black rounded-xl h-10 py-2 w-20" onClick={() => setEditingIndex(null)}>Hủy</button>}
+                </div>
+
             </form>
             <p style={{ color: msgColor }}>{message}</p>
-            <table>
-                <thead>
+            <table className="w-full border-2 border-black my-8 h-40 overflow-y-scroll">
+                <thead className="bg-red-500 border-2 border-black">
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
@@ -109,23 +112,31 @@ function CarList() {
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="text-center my-4">
                     {cars.map((car, index) => (
-                        <tr key={index}>
-                            <td>{car.carid}</td>
-                            <td>{car.carname}</td>
-                            <td>{car.carmodel}</td>
-                            <td>{car.carprice}</td>
-                            <td>{car.carseats}</td>
-                            <td>{car.carbrand}</td>
-                            <img src={car.carImage} alt={car.carname} width="100" />
-                            <td>
-                                <button onClick={() => handleEdit(index)}>Edit</button>
-                                <button onClick={() => handleDelete(index)}>Delete</button>
+                        <tr
+                            className="border-2 border-black cursor-pointer hover:bg-gray-200"
+                            key={index}
+                            onClick={() => handleEdit(index)} // Khi click vào hàng thì hiển thị thông tin lên form
+                        >
+                            <td className="border-2 border-black">{car.carid}</td>
+                            <td className="border-2 border-black">{car.carname}</td>
+                            <td className="border-2 border-black">{car.carmodel}</td>
+                            <td className="border-2 border-black">{car.carprice}</td>
+                            <td className="border-2 border-black">{car.carseats}</td>
+                            <td className="border-2 border-black">{car.carbrand}</td>
+                            <td className="border-2 border-black">
+                                <img src={car.carImage} alt={car.carname} width="100" />
+                            </td>
+                            <td className="border-2 border-black bg-red-500">
+                                <button className="w-full h-full" onClick={(e) => { e.stopPropagation(); handleDelete(index); }}>
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
+
             </table>
         </div>
     );

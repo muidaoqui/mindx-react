@@ -1,6 +1,13 @@
+import React, { useState, useEffect } from "react";
 import logo from '../../img/volvo/logo.jpg'
 import {xc40, xc60, xc90, ec40, s90} from '../../img/volvo/index.js';
+import CarList from './CarList';
 function Volvo() {
+  const [cars, setCars] = useState([]);
+  useEffect(() => {
+    const storedCars = JSON.parse(localStorage.getItem("cars")) || [];
+    setCars(storedCars);
+  }, []);        
   return (
     <div className="font-sans mb-10">
         <div className="flex justify-center my-16">
@@ -29,44 +36,16 @@ function Volvo() {
             Mild Hybrid
           </button>
         </div>
-        <div>
-          <h1 className="text-xl font-bold mx-20 my-10">SUV</h1>
-          <div className="grid grid-cols-3 gap-4 mx-20 ">
-            
-            <div className="border-1 text-lg text-black border-black ">
-              <img src={xc40} alt="" className="mb-10 bg-red-100 h-auto w-full"/>
-              <h2 className="text-black">XC40</h2>
-              <h3 className="text-black">Mild hybrid</h3>
-            </div>                        
-            <div className="border-1 text-lg text-black border-black ">
-              <img src={xc60} alt="" className="mb-10 bg-red-100 h-auto w-full"/>
-              <h2 className="text-black">XC60</h2>
-              <h3 className="text-black">Mild hybrid</h3>
-            </div> 
-            <div className="border-1 text-lg text-black border-black ">
-              <img src={xc90} alt="" className="mb-10 bg-red-100 h-auto w-full"/>
-              <h2 className="text-black">XC90</h2>
-              <h3 className="text-black">Mild hybrid</h3>
-            </div> 
-          </div>
-          <h1 className="text-xl font-bold mx-20 my-10">Crossover</h1>
-          <div className="grid grid-cols-3 gap-4 mx-20 ">
-            
-            <div className="border-1 text-lg text-black border-black ">
-              <img src={ec40} alt="" className="mb-10 bg-red-100 h-auto w-full"/>
-              <h2 className="text-black">EC40</h2>
-              <h3 className="text-black">Electric</h3>
-            </div>                        
-          </div>
-          <h1 className="text-xl font-bold mx-20 my-10">Sedans</h1>
-          <div className="grid grid-cols-3 gap-4 mx-20 ">
-            
-            <div className="border-1 text-lg text-black border-black ">
-              <img src={s90} alt="" className="mb-10 bg-red-100 h-auto w-full"/>
-              <h2 className="text-black">S90</h2>
-              <h3 className="text-black">Mild hybrid</h3>
-            </div>                        
-          </div>
+        <div className="grid grid-cols-2 gap-20 mx-32 my-20">
+                {cars
+                .filter(car => car.carbrand === "Volvo")
+                .map((car, index) => (
+                    <div key={index} className="border border-gray-400 p-4 text-center rounded-lg shadow-lg">
+                        <img src={car.carImage} alt={car.carname} className="w-full h-48 object-cover rounded-md"/>
+                        <h2 className="text-black text-lg font-semibold mt-2">{car.carname}</h2>
+                        <h3 className="text-gray-700">Giá từ {car.carprice} tỷ</h3>
+                    </div>
+                ))}
         </div>
     </div>
   )

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "../css/Admin.css";
 import Poster from "../../img/poster.png"
 
 function UserList() {
@@ -53,8 +52,8 @@ function UserList() {
         }
         usersList.push({ fullname, email, pass });
         setMessage("Thêm người dùng thành công!");
-
         setMsgColor('green');
+        
         setUsers(usersList);
         localStorage.setItem("users", JSON.stringify(usersList));
 
@@ -81,35 +80,35 @@ function UserList() {
 
     return (
         <div className="all">
-            <div className="admin-panel">
-                <h2>Quản Lý Người Dùng</h2>
+            <div className="w-full h-full mb-10">
+                <h2 className="text-center font-bold text-2xl my-10 text-cyan-500">Quản Lý Người Dùng</h2>
 
-                <form onSubmit={handleSubmit}>
-                    <input type="text" placeholder="Họ và tên" value={fullname} onChange={(e) => setFullname(e.target.value)} />
-                    <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={editingIndex !== null} />
-                    <input type="password" placeholder="Mật khẩu" value={pass} onChange={(e) => setPass(e.target.value)} />
-                    <input type="password" placeholder="Xác nhận mật khẩu" value={confPass} onChange={(e) => setConfPass(e.target.value)} />
-                    <button type="submit" className="create-btn">{editingIndex !== null ? "Cập nhật" : "Thêm"}</button>
-                    {editingIndex !== null && <button type="button" className="cancel-btn" onClick={() => setEditingIndex(null)}>Hủy</button>}
+                <form onSubmit={handleSubmit} className="flex gap-10 justify-center items-center">
+                    <input className="border-2 border-black rounded-xl h-10 p-2" type="text" placeholder="Họ và tên" value={fullname} onChange={(e) => setFullname(e.target.value)} />
+                    <input className="border-2 border-black rounded-xl h-10 p-2" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={editingIndex !== null} />
+                    <input className="border-2 border-black rounded-xl h-10 p-2" type="password" placeholder="Mật khẩu" value={pass} onChange={(e) => setPass(e.target.value)} />
+                    <input className="border-2 border-black rounded-xl h-10 p-2" type="password" placeholder="Xác nhận mật khẩu" value={confPass} onChange={(e) => setConfPass(e.target.value)} />
+                    <button type="submit" className="border-2 border-black rounded-xl h-10 py-2 w-20 bg-green-500 font-bold">{editingIndex !== null ? "Cập nhật" : "Thêm" }</button>
+                    {editingIndex !== null && <button type="button" className="border-2 border-black rounded-xl h-10 py-2 w-20" onClick={() => setEditingIndex(null)}>Hủy</button>}
                 </form>
                 {message && <p style={{ color: msgColor }}>{message}</p>}
 
-                <table>
-                    <thead>
-                        <tr>
+                <table className="w-full border-2 border-black my-8 h-40 overflow-y-scroll">
+                    <thead className="bg-red-500 border-2 border-black">
+                        <tr >
                             <th>Họ và Tên</th>
                             <th>Email</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="text-center my-4 ">
                         {users.length > 0 ? (
                             users.map((user, index) => (
-                                <tr key={index} onClick={() => handleEdit(index)}> 
-                                    <td>{user.fullname}</td>
-                                    <td>{user.email}</td>
-                                    <td>
-                                        <button className="delete-btn" onClick={(e) => { e.stopPropagation(); handleDelete(index); }}>Xóa</button>
+                                <tr className="border-2 border-black" key={index} onClick={() => handleEdit(index)}> 
+                                    <td className="border-2 border-black">{user.fullname}</td>
+                                    <td className="border-2 border-black">{user.email}</td>
+                                    <td className="border-2 border-black bg-red-500">
+                                        <button className="w-full h-full " onClick={(e) => { e.stopPropagation(); handleDelete(index); }}>Xóa</button>
                                     </td>
                                 </tr>
                             ))
