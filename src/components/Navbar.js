@@ -5,10 +5,10 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="container px-4 bg-gradient-to-r from-yellow-500 to-gray-900">
-      <nav className="flex items-center justify-between py-4">
+    <div className=" px-4 bg-gradient-to-r from-yellow-500 to-gray-900 w-full">
+      <nav className="flex items-center justify-between py-4 w-full">
         {/* Logo */}
-        <div className="flex items-center space-x-4 gap-8">
+        <div className="flex items-center space-x-4 gap-8 ">
           <a href="/">
             <img src={logo} alt="Logo" className="w-16 h-16 rounded-xl" />
           </a>
