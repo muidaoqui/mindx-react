@@ -2,12 +2,22 @@ import logo from '../../img/mec/logo.jpg'
 import {cclass, eclass, sclass, glc, gle, gls, maysclass, maygls, g63} from '../../img/mec/index'
 import {React, useEffect, useState} from 'react';
 import CarList from './CarList';
+import CarDetails from '../details/CarDetails'
+import { useNavigate } from 'react-router-dom';
 function Mercedes() {
     const [cars, setCars] = useState([]);
     useEffect(() => {
         const storedCars = JSON.parse(localStorage.getItem("cars")) || [];
         setCars(storedCars);
     }, []);
+
+    const navigate = useNavigate();
+
+    const [selectedType, setSelectedType] = useState(null);
+    const handleSelectType = (type) => {
+        setSelectedType(type);
+    };
+
   return (
     <div className="font-serif">
         <div className="my-10 flex flex-col items-center">
@@ -30,7 +40,10 @@ function Mercedes() {
             <div className="flex flex-col items-start gap-4 w-1/6">
                 <h2 className="text-2xl text-black">13 Mẫu</h2>
                 <h3 className="text-xl text-black">Loại thân xe</h3>
-                <button className="border-2 rounded-lg border-black p-1 ">
+                <button 
+                    className={`border-2 rounded-lg border-black p-1 ${selectedType === 'Sedans' ? 'bg-black text-white' : ''}`} 
+                    onClick={() => handleSelectType('Sedans')}
+                >
                     Sedans
                 </button>
                 <button className="border-2 rounded-lg border-black p-1 ">
@@ -49,9 +62,13 @@ function Mercedes() {
             </div>
             <div className="grid grid-cols-2 gap-20 mx-32 my-10">
                 {cars
-                .filter(car => car.carbrand === "Mercedes-Benz")
-                .map((car, index) => (
-                    <div key={index} className="border border-gray-400 p-4 text-center rounded-lg shadow-lg">
+                    .filter(car => car.carbrand === "Mercedes-Benz")
+                    .map((car, index) => (
+                    <div 
+                        key={index} 
+                        className="border border-gray-400 p-4 text-center rounded-lg shadow-lg cursor-pointer"
+                        onClick={() => navigate(`/car-details/${car.carid}`)} // Điều hướng sang trang chi tiết xe
+                    >
                         <img src={car.carImage} alt={car.carname} className="w-full h-48 object-cover rounded-md"/>
                         <h2 className="text-black text-lg font-semibold mt-2">{car.carname}</h2>
                         <h3 className="text-gray-700">Giá từ {car.carprice} tỷ</h3>

@@ -32,7 +32,8 @@ function Layout() {
           <Route path="/car-list" element={<CarList />} />
           <Route path="/shopping-cart" element={<Shopping />} />
           <Route path="/mercedes" element={<Mercedes />} />
-          <Route path="/details" element={<CarDetails />} />
+          <Route path="/car-details" element={<CarDetails />} />
+          <Route path="/car-details/:carid" element={<CarDetails />} />
           <Route path="*" element={<h2>404 - Page Not Found</h2>} />
         </Routes>
       </main>

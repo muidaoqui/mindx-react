@@ -9,6 +9,8 @@ function CarList() {
     const [carseats, setCarseats] = useState('');
     const [carbrand, setCarbrand] = useState('');
     const [carImage, setCarImage] = useState('');
+    const [carDescription, setCarDescription] = useState('');
+    const [carRating, setCarRating] = useState(null);
     const [editingIndex, setEditingIndex] = useState(null);
     const [message, setMessage] = useState('');
     const [msgColor, setMsgColor] = useState('red');
@@ -25,13 +27,28 @@ function CarList() {
         setCarprice(car.carprice);
         setCarseats(car.carseats);
         setCarbrand(car.carbrand);
-        setCarImage(car.carImage);
+        setCarDescription(car.carDescription);
+        if (car.carImage) {
+            setCarImage(car.carImage);
+        }
         setEditingIndex(index);
     };
+    const handleCancelEdit = () => {
+        setCarid('');
+        setCarname('');
+        setCarmodel('');
+        setCarprice('');
+        setCarseats('');
+        setCarbrand('');
+        setCarImage('');
+        setCarDescription('');
+        setEditingIndex(null);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!carid || !carname || !carmodel || !carprice || !carseats || !carbrand || !carImage) {
+        if (!carid || !carname || !carmodel || !carprice || !carseats || !carbrand || !carImage || !carDescription) {
             setMessage("Vui lòng điền đầy đủ thông tin.");
             setMsgColor('red');
             return;
@@ -40,15 +57,18 @@ function CarList() {
         let carsList = [...cars];
 
         if (editingIndex !== null) {
-            carsList[editingIndex] = { carid, carname, carmodel, carprice, carseats, carbrand, carImage };
+            carsList[editingIndex] = { carid, carname, carmodel, carprice, carseats, carbrand, carImage, carDescription };
             setMessage("Cập nhật thành công!");
-        } else if (carsList.find(car => car.carid === carid)) {
-            setMessage("ID đã tồn tại.");
-            setMsgColor('red');
-            return;
-        }
-        carsList.push({ carid, carname, carmodel, carprice, carseats, carbrand, carImage });
-        setMessage("Thêm xe thành công!");
+        } else {
+            if (carsList.find(car => car.carid === carid)) {
+                setMessage("ID đã tồn tại.");
+                setMsgColor('red');
+                return;
+            }
+            carsList.push({ carid, carname, carmodel, carprice, carseats, carbrand, carImage, carDescription });
+            setMessage("Thêm xe thành công!");
+        }        
+        
 
         setMsgColor('green');
         setCars(carsList);
@@ -61,6 +81,7 @@ function CarList() {
         setCarseats('');
         setCarbrand('');
         setCarImage('');
+        setCarDescription('');
         setEditingIndex(null);
     };
     const handleDelete = (index) => {
@@ -88,13 +109,14 @@ function CarList() {
                 <input className="border-2 border-black rounded-xl h-10 p-2" type="text" placeholder="Price" value={carprice} onChange={(e) => setCarprice(e.target.value)} />
                 <input className="border-2 border-black rounded-xl h-10 p-2" type="text" placeholder="Seats" value={carseats} onChange={(e) => setCarseats(e.target.value)} />
                 <input className="border-2 border-black rounded-xl h-10 p-2" type="text" placeholder="Brand" value={carbrand} onChange={(e) => setCarbrand(e.target.value)} />
+                <input className="border-2 border-black rounded-xl h-10 p-2" type="text" placeholder="Description" value={carDescription} onChange={(e) => setCarDescription(e.target.value)} />
                 <input className="border-2 border-black rounded-xl h-10 p-2" type="file" accept="image/*" onChange={handleImageUpload} />
 
                 {carImage && <img src={carImage} alt="Car Preview" width="100" />}
 
                 <div className="flex justify-end mt-4">
                     <button type="submit" className="border-2 border-black rounded-xl h-10 py-2 w-20 bg-green-500 font-bold mr-4">{editingIndex !== null ? "Cập nhật" : "Thêm" }</button>
-                    {editingIndex !== null && <button type="button" className="border-2 border-black rounded-xl h-10 py-2 w-20" onClick={() => setEditingIndex(null)}>Hủy</button>}
+                    {editingIndex !== null && <button type="button" className="border-2 border-black rounded-xl h-10 py-2 w-20" onClick={() => handleCancelEdit(null)}>Hủy</button>}
                 </div>
 
             </form>
@@ -114,10 +136,11 @@ function CarList() {
                 </thead>
                 <tbody className="text-center my-4">
                     {cars.map((car, index) => (
-                        <tr
-                            className="border-2 border-black cursor-pointer hover:bg-gray-200"
-                            key={index}
-                            onClick={() => handleEdit(index)} // Khi click vào hàng thì hiển thị thông tin lên form
+                        <tr key={index} className="border-2 border-black cursor-pointer hover:bg-gray-200"
+                            onClick={(e) => {
+                                e.stopPropagation(); 
+                                handleEdit(index);
+                            }}
                         >
                             <td className="border-2 border-black">{car.carid}</td>
                             <td className="border-2 border-black">{car.carname}</td>
