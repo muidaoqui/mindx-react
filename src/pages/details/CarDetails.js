@@ -134,7 +134,7 @@ const CarDetails = () => {
                     <div className="flex justify-around bg-gray-800 p-4 shadow-md mt-4 w-auto gap-4 space-x-4">
                         <div className="flex items-center gap-4 w-auto">
                             <img src={ava} className="w-16 h-16 rounded-full border-1 border-gray-800 shadow-lg"/>
-                            <div>
+                            <div className="2xl:grid grid-cols-2">
                                 <h3 className="text-white font-semibold">Mui Dao</h3>
                                 <p className="text-white text-center text-sm">Service</p>
                             </div>
@@ -191,8 +191,25 @@ const CarDetails = () => {
                 </div>
                 
             </div>
-            <div>
-                <p>bderther</p>
+            <div className="mx-2 xl:mx-20 bg-sky-950 py-10">
+                <div className="">
+                    <label className="mx-4 text-center md:text-lg text-cyan-400 border-2 border-cyan-400 mx-40 py-4 grid justu=ify-center">{cars?.carprice ? `${cars.carprice} VND` : "Hiện chưa có giá niêm yết"}</label>
+                </div>
+                <div className="mx-16 text-cyan-400">
+                    <h1 className="text-xl font-bold my-6">Chi tiết xe</h1>
+                    <p className="flex justify-between">
+                        Name <span>{cars?.carname ? `${cars.carname}` : ""}</span>
+                    </p>
+                    <p className="flex justify-between">
+                        Model <span>{cars?.carmodel ? `${cars.carmodel}` : ""}</span>
+                    </p>
+                    <p className="flex justify-between">
+                        Seats <span>{cars?.carseats ? `${cars.carseats}` : ""}</span>
+                    </p>
+                    <p className="flex justify-between">
+                        Brand <span>{cars?.carbrand ? `${cars.carbrand}` : ""}</span>
+                    </p>
+                </div>
             </div>       
         </div>
         <div className="col-span-2 mb-10 p-4 text-white ">
