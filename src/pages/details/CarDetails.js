@@ -30,7 +30,7 @@ const CarDetails = () => {
         setCars(foundCar || null); // Nếu không tìm thấy thì set null
     }, [carid]);
 
-    const [selectedImage, setSelectedImage] = useState(images.length > 0 ? images[0] : "");
+    const [selectedImage, setSelectedImage] = useState(images.length > 0 ? images[0] : null);
 
     const settings = {
         dots: false,
@@ -47,6 +47,39 @@ const CarDetails = () => {
     const [contact, setContact] = useState('');
 
     const center = [10.762622, 106.660172];
+
+    const [percent, setPercent] = useState(9); 
+    const [months, setMonths] = useState(9); 
+
+    const handleChange = (event) => {
+        const selectedMonths = parseInt(event.target.value, 10);
+        setMonths(selectedMonths); 
+        setPercent(selectedMonths);
+    };
+
+    const [difference, setDifference] = useState(0);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [dividePrice, setDividePrice] = useState(0);
+
+    useEffect(() => {
+        if (cars?.carprice) {
+            const carPriceNumber = parseFloat(cars.carprice); // Chuyển thành số
+            if (!isNaN(carPriceNumber)) {
+                const diff = (carPriceNumber * percent) / 100;
+                const total = carPriceNumber + diff;
+                setDifference(diff);
+                setTotalPrice(total);
+                setDividePrice(parseFloat(total / months * 1000).toFixed(3)); 
+            }
+        } else {
+            setDifference(0);
+            setTotalPrice(0);
+            setDividePrice(0);
+        }
+    }, [percent, months, cars]);
+
+
+
 
   return (
     <div>
@@ -75,7 +108,7 @@ const CarDetails = () => {
                 ))}
             </Slider>
         </div>
-        <div className="grid md:grid-cols-2 grid-cols-1 mt-4 mx-8 gap-8">
+        <div className="grid grid-cols-1 md:grid md:grid-cols-2  mt-4 mx-8 gap-8">
             <div>
                 <div>
                     <h1 className="text-black text-2xl font-bold mb-4">Description</h1>
@@ -100,7 +133,7 @@ const CarDetails = () => {
                     <h1 className="text-black text-2xl font-bold my-8">Dealer Info</h1>
                     <div className="flex justify-around bg-gray-800 p-4 shadow-md mt-4 w-auto gap-4 space-x-4">
                         <div className="flex items-center gap-4 w-auto">
-                            <img src={ava} class="w-16 h-16 rounded-full border-1 border-gray-800 shadow-lg"/>
+                            <img src={ava} className="w-16 h-16 rounded-full border-1 border-gray-800 shadow-lg"/>
                             <div>
                                 <h3 className="text-white font-semibold">Mui Dao</h3>
                                 <p className="text-white text-center text-sm">Service</p>
@@ -147,7 +180,7 @@ const CarDetails = () => {
                 </div>
                 <div>
                     <h1 className="text-black text-2xl font-bold my-8">Địa Chỉ</h1>
-                    <MapContainer center={center} zoom={13} className="w-auto">
+                    <MapContainer center={center} zoom={13} style={{ height: "400px", width: "100%" }}>
                         <TileLayer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
@@ -156,14 +189,48 @@ const CarDetails = () => {
                         </Marker>
                     </MapContainer>
                 </div>
-                <div>
-                    <h1 className="text-black text-2xl font-bold my-8">Dự Đoán Trả Góp</h1>
-                </div>
+                
             </div>
             <div>
                 <p>bderther</p>
-            </div>
+            </div>       
         </div>
+        <div className="col-span-2 mb-10 p-4 text-white ">
+            <h1 className="text-black text-2xl font-bold my-8">Dự Đoán Trả Góp</h1>
+                <div className="flex flex-col md:grid grid-cols-5 grid-rows-2  bg-sky-950 p-4 gap-6">
+                    <div className="grid h-20">
+                        <h2>Giá xe</h2>
+                        <label className="bg-cyan-800 py-3 p-4 text-white">{cars?.carprice ? `${cars.carprice} VND` : "Hiện chưa có giá niêm yết"}</label>
+                    </div>
+                    <div className="grid h-20">
+                        <h2>Trả trong thời gian</h2>
+                        <select onChange={handleChange} className="border p-2 rounded bg-cyan-800">
+                            <option value="9">9 tháng</option>
+                            <option value="12">12 tháng</option>
+                            <option value="18">18 tháng</option>
+                            <option value="24">24 tháng</option>
+                            <option value="36">36 tháng</option>
+                        </select>
+                    </div>
+                    <div className="col-span-3 row-span-2 text-center justify-center p-10 grid gap-8">
+                        <h2 className="text-2xl font-bold underline">Tổng tiền / Số tiền góp hằng tháng</h2>
+                        <label className="bg-cyan-800 w-full font-bold text-red-500 p-4">
+                            {totalPrice.toLocaleString()} tỷ VND / {dividePrice} triệu VND
+                        </label>
+                    </div>
+                    <div className="grid h-20">
+                        <h2>Phần trăm chênh lệch(%)</h2>
+                        <label className="bg-cyan-800 py-3 p-4 text-white">{percent}%</label>
+                    </div>
+                    <div className="grid h-20">
+                        <h2>Số tiền chênh lệch</h2>
+                        <label className="bg-cyan-800 py-3 p-4 text-white">
+                            {difference.toLocaleString()} tỷ VNĐ
+                        </label>
+                    </div>
+                    
+                </div>
+            </div>                 
     </div>
   );
 };
