@@ -79,6 +79,8 @@ const CarDetails = () => {
     }, [percent, months, cars]);
 
 
+    
+
 
 
   return (

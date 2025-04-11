@@ -13,7 +13,7 @@ function Volvo() {
         <div className="flex justify-center my-16">
           <img src={logo} alt="Logo Volvo" className=" w-20"/>
         </div>
-        <div className="flex justify-between mx-20">
+        <div className="flex justify-between mx-10">
             <div>
               <p className="font-light">request a quote</p>
               <h1 className="text-3xl font-bold">Select model</h1>
@@ -36,12 +36,12 @@ function Volvo() {
             Mild Hybrid
           </button>
         </div>
-        <div className="grid grid-cols-2 gap-20 mx-32 my-20">
+        <div className="grid-cols-1 md:grid grid-cols-2 xl:grid-cols-3 gap-10 mx-20">
                 {cars
                 .filter(car => car.carbrand === "Volvo")
                 .map((car, index) => (
-                    <div key={index} className="border border-gray-400 p-4 text-center rounded-lg shadow-lg">
-                        <img src={car.carImage} alt={car.carname} className="w-full h-48 object-cover rounded-md"/>
+                    <div key={index} className="border border-gray-400 my-10 text-center rounded-lg shadow-lg">
+                        <img src={car.carImage} alt={car.carname} className="w-auto object-cover rounded-md mx-auto"/>
                         <h2 className="text-black text-lg font-semibold mt-2">{car.carname}</h2>
                         <h3 className="text-gray-700">Giá từ {car.carprice} tỷ</h3>
                     </div>

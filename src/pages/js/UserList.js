@@ -21,104 +21,177 @@ function UserList() {
         setFullname(user.fullname);
         setEmail(user.email);
         setPass(user.pass);
-        setConfPass(user.pass); 
+        setConfPass(user.pass);
         setEditingIndex(index);
     };
-
+    
     const handleSubmit = (e) => {
         e.preventDefault();
-
+    
         if (!fullname || !email || !pass || !confPass) {
             setMessage("Vui lòng điền đầy đủ thông tin.");
             setMsgColor('red');
             return;
         }
-
+    
         if (pass !== confPass) {
             setMessage("Mật khẩu không khớp.");
             setMsgColor('red');
             return;
         }
-
+    
         let usersList = [...users];
-
+    
         if (editingIndex !== null) {
             usersList[editingIndex] = { fullname, email, pass };
             setMessage("Cập nhật thành công!");
-        } else if (usersList.find(user => user.email === email)) {
-            setMessage("Email đã tồn tại.");
-            setMsgColor('red');
-            return;
+        } else {
+            if (usersList.some(user => user.email === email)) {
+                setMessage("Email đã tồn tại.");
+                setMsgColor('red');
+                return;
+            }
+            usersList.push({ fullname, email, pass });
+            setMessage("Thêm người dùng thành công!");
         }
-        usersList.push({ fullname, email, pass });
-        setMessage("Thêm người dùng thành công!");
+    
         setMsgColor('green');
-        
         setUsers(usersList);
         localStorage.setItem("users", JSON.stringify(usersList));
-
+    
+        resetForm();
+    };
+    
+    const handleDelete = (index) => {
+        const updatedUsers = users.filter((_, i) => i !== index);
+        setUsers(updatedUsers);
+        localStorage.setItem("users", JSON.stringify(updatedUsers));
+    
+        if (editingIndex === index) resetForm();
+    };
+    
+    const resetForm = () => {
         setFullname('');
         setEmail('');
         setPass('');
         setConfPass('');
         setEditingIndex(null);
     };
+    
 
-    const handleDelete = (index) => {
-        const updatedUsers = users.filter((_, i) => i !== index);
-        setUsers(updatedUsers);
-        localStorage.setItem("users", JSON.stringify(updatedUsers));
+    const [showForm, setShowForm] = useState(false);
 
-        if (editingIndex === index) {
-            setFullname('');
-            setEmail('');
-            setPass('');
-            setConfPass('');
-            setEditingIndex(null);
-        }
-    };
+    const [searchQuery, setSearchQuery] = useState('');
+    const filteredUsers = users.filter(user => 
+        user.fullname.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        user.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     return (
         <div className="all">
             <div className="w-full h-full mb-10">
                 <h2 className="text-center font-bold text-2xl my-10 text-cyan-500">Quản Lý Người Dùng</h2>
+                <div className="relative flex mb-4 gap-4 justify-between mx-4">
+                    <div className="flex gap-4">
+                        <div className="flex flex-col items-center gap-4">
+                            {!showForm && (
+                                <button 
+                                    className="border-2 border-black rounded-xl h-10 px-4 bg-blue-500 text-white font-bold" 
+                                    onClick={() => setShowForm(true)}
+                                >
+                                    Add User
+                                </button>
+                            )}
+                        </div>
 
-                <form onSubmit={handleSubmit} className="flex gap-10 justify-center items-center">
-                    <input className="border-2 border-black rounded-xl h-10 p-2" type="text" placeholder="Họ và tên" value={fullname} onChange={(e) => setFullname(e.target.value)} />
-                    <input className="border-2 border-black rounded-xl h-10 p-2" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={editingIndex !== null} />
-                    <input className="border-2 border-black rounded-xl h-10 p-2" type="password" placeholder="Mật khẩu" value={pass} onChange={(e) => setPass(e.target.value)} />
-                    <input className="border-2 border-black rounded-xl h-10 p-2" type="password" placeholder="Xác nhận mật khẩu" value={confPass} onChange={(e) => setConfPass(e.target.value)} />
-                    <button type="submit" className="border-2 border-black rounded-xl h-10 py-2 w-20 bg-green-500 font-bold">{editingIndex !== null ? "Cập nhật" : "Thêm" }</button>
-                    {editingIndex !== null && <button type="button" className="border-2 border-black rounded-xl h-10 py-2 w-20" onClick={() => setEditingIndex(null)}>Hủy</button>}
-                </form>
+                        {showForm && (
+                            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                                <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center bg-white p-6 rounded-xl shadow-lg z-50 w-96">
+                                    <input className="border-2 border-black rounded-xl h-10 p-2 w-full" type="text" placeholder="Họ và tên" value={fullname} onChange={(e) => setFullname(e.target.value)} />
+                                    <input className="border-2 border-black rounded-xl h-10 p-2 w-full" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={editingIndex !== null} />
+                                    <input className="border-2 border-black rounded-xl h-10 p-2 w-full" type="password" placeholder="Mật khẩu" value={pass} onChange={(e) => setPass(e.target.value)} />
+                                    <input className="border-2 border-black rounded-xl h-10 p-2 w-full" type="password" placeholder="Xác nhận mật khẩu" value={confPass} onChange={(e) => setConfPass(e.target.value)} />
+
+                                    <div className="flex gap-4">
+                                        <button type="submit" className="border-2 border-black rounded-xl h-10 px-4 bg-green-500 font-bold">
+                                            {editingIndex !== null ? "Cập nhật" : "Thêm"}
+                                        </button>
+                                        <button 
+                                            type="button" 
+                                            className="border-2 border-black rounded-xl h-10 px-4 bg-red-500 text-white font-bold"
+                                            onClick={() => setShowForm(false)}
+                                        >
+                                            Hủy
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        )}
+
+                        <div className="flex flex-col items-center gap-4">
+                            <input
+                            type="search"
+                            placeholder="Tìm kiếm người dùng..."
+                            className="border-2 border-gray-300 rounded-lg p-2 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        </div>
+                    </div>
+                    <div className="flex gap-4">
+                        <div>
+                            <button 
+                                className="border-2 border-black rounded-xl h-10 px-4 bg-blue-500 text-white font-bold" 
+                                onClick={() => setShowForm(true)}
+                            >
+                                Import
+                            </button>
+                        </div>
+                        <div>
+                            <button 
+                                className="border-2 border-black rounded-xl h-10 px-4 bg-blue-500 text-white font-bold" 
+                                onClick={() => setShowForm(true)}
+                            >
+                                Export
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 {message && <p style={{ color: msgColor }}>{message}</p>}
 
-                <table className="w-full border-2 border-black my-8 h-40 overflow-y-scroll">
-                    <thead className="bg-red-500 border-2 border-black">
-                        <tr >
-                            <th>Họ và Tên</th>
-                            <th>Email</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody className="text-center my-4 ">
-                        {users.length > 0 ? (
-                            users.map((user, index) => (
-                                <tr className="border-2 border-black" key={index} onClick={() => handleEdit(index)}> 
-                                    <td className="border-2 border-black">{user.fullname}</td>
-                                    <td className="border-2 border-black">{user.email}</td>
-                                    <td className="border-2 border-black bg-red-500">
-                                        <button className="w-full h-full " onClick={(e) => { e.stopPropagation(); handleDelete(index); }}>Xóa</button>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
+                <div className="w-full border-2 border-black my-8 max-h-80 overflow-y-auto">
+                    <table className="w-full border-collapse">
+                        {/* THEAD cố định */}
+                        <thead className="bg-red-500 border-2 border-black sticky top-0 z-10">
                             <tr>
-                                <td colSpan="3">Không có người dùng nào</td>
+                                <th className=" border-2 border-black">STT</th>
+                                <th className="p-2 border-2 border-black">Họ và Tên</th>
+                                <th className="p-2 border-2 border-black">Email</th>
+                                <th className="p-2 border-2 border-black">Hành động</th>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
+                        </thead>
+
+                        {/* TBODY có scroll */}
+                        <tbody className="text-center bg-white" key={''} onClick={() => setShowForm(true)}>
+                            {filteredUsers.length > 0 ? (
+                                filteredUsers.map((user, index) => (
+                                    <tr className="border-2 border-black" key={index} onClick={() => handleEdit(index)}> 
+                                        <td className="p-2 border-2 border-black">{index + 1}</td>
+                                        <td className="p-2 border-2 border-black">{user.fullname}</td>
+                                        <td className="p-2 border-2 border-black">{user.email}</td>
+                                        <td className="p-2 border-2 border-black bg-red-500">
+                                            <button className="w-full h-full" onClick={(e) => { e.stopPropagation(); handleDelete(index); }}>Xóa</button>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="3" className="p-2">Không có người dùng nào</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
