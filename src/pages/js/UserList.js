@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Poster from "../../img/poster.png"
 
 function UserList() {
@@ -54,22 +54,24 @@ function UserList() {
             usersList.push({ fullname, email, pass });
             setMessage("Thêm người dùng thành công!");
         }
-    
+
         setMsgColor('green');
         setUsers(usersList);
         localStorage.setItem("users", JSON.stringify(usersList));
-    
         resetForm();
     };
-    
+
     const handleDelete = (index) => {
+        const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa người dùng này?");
+        if (!confirmDelete) return;
+
         const updatedUsers = users.filter((_, i) => i !== index);
         setUsers(updatedUsers);
         localStorage.setItem("users", JSON.stringify(updatedUsers));
-    
+
         if (editingIndex === index) resetForm();
     };
-    
+
     const resetForm = () => {
         setFullname('');
         setEmail('');
@@ -77,15 +79,120 @@ function UserList() {
         setConfPass('');
         setEditingIndex(null);
     };
-    
 
     const [showForm, setShowForm] = useState(false);
-
     const [searchQuery, setSearchQuery] = useState('');
     const filteredUsers = users.filter(user => 
         user.fullname.toLowerCase().includes(searchQuery.toLowerCase()) || 
         user.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    const fileInputRef = useRef(null);
+    const handleImport = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        const fileExtension = file.name.split(".").pop().toLowerCase();
+
+        reader.onload = (event) => {
+            const content = event.target.result;
+
+            try {
+                if (fileExtension === "json") {
+                    const newData = JSON.parse(content);
+                    if (!Array.isArray(newData)) {
+                        console.error("Dữ liệu JSON không hợp lệ");
+                        return;
+                    }
+                    const nonDuplicate = newData.filter(user => !users.some(u => u.email === user.email));
+                    const updatedUsers = [...users, ...nonDuplicate];
+                    setUsers(updatedUsers);
+                    localStorage.setItem("users", JSON.stringify(updatedUsers));
+                    setMessage("Đã nhập dữ liệu JSON thành công");
+                    setMsgColor("green");
+
+                } else if (fileExtension === "csv") {
+                    const lines = content.split("\n").filter(line => line.trim() !== "");
+                    const headers = lines[0].split(",").map(h => h.trim());
+                    const validData = [];
+
+                    for (let i = 1; i < lines.length; i++) {
+                        const values = lines[i].split(",").map(v => v.trim());
+                        if (values.length === headers.length) {
+                            const user = {};
+                            headers.forEach((header, index) => {
+                                user[header] = values[index];
+                            });
+                            if (user.fullname && user.email && user.pass && !users.some(u => u.email === user.email)) {
+                                validData.push(user);
+                            }
+                        }
+                    }
+
+                    const updatedUsers = [...users, ...validData];
+                    setUsers(updatedUsers);
+                    localStorage.setItem("users", JSON.stringify(updatedUsers));
+                    setMessage("Đã nhập dữ liệu CSV thành công");
+                    setMsgColor("green");
+
+                } else {
+                    setMessage("Chỉ hỗ trợ file JSON và CSV");
+                    setMsgColor("red");
+                }
+            } catch (error) {
+                console.error("Lỗi khi đọc file:", error);
+                setMessage("Lỗi khi đọc file");
+                setMsgColor("red");
+            }
+        };
+
+        reader.readAsText(file);
+    };
+
+    const handleExportCSV = () => {
+        if (users.length === 0) {
+            setMessage("Không có dữ liệu để xuất.");
+            setMsgColor("red");
+            return;
+        }
+    
+        // Lấy danh sách các headers từ key của object đầu tiên
+        const headers = Object.keys(users[0]).filter(key => key !== 'ratings'); // loại ratings nếu không cần
+        const csvRows = [];
+    
+        // Tạo dòng header
+        csvRows.push(headers.join(","));
+    
+        // Tạo dòng dữ liệu
+        users.forEach(car => {
+            const row = headers.map(header => {
+                // Escape dấu phẩy và dấu xuống dòng
+                let value = car[header] ?? "";
+                if (typeof value === "string") {
+                    value = `"${value.replace(/"/g, '""')}"`; // escape dấu "
+                }
+                return value;
+            });
+            csvRows.push(row.join(","));
+        });
+    
+        const csvContent = csvRows.join("\n");
+    
+        // Tạo file và tự động tải về
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+    
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "users_export.csv";
+        link.click();
+        URL.revokeObjectURL(url);
+        
+        setMessage("Xuất CSV thành công!");
+        setMsgColor("green");
+    };
+    
 
     return (
         <div className="all">
@@ -119,7 +226,7 @@ function UserList() {
                                         <button 
                                             type="button" 
                                             className="border-2 border-black rounded-xl h-10 px-4 bg-red-500 text-white font-bold"
-                                            onClick={() => setShowForm(false)}
+                                            onClick={() => {resetForm(); setShowForm(false)}}
                                         >
                                             Hủy
                                         </button>
@@ -130,18 +237,25 @@ function UserList() {
 
                         <div className="flex flex-col items-center gap-4">
                             <input
-                            type="search"
-                            placeholder="Tìm kiếm người dùng..."
-                            className="border-2 border-gray-300 rounded-lg p-2 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
+                                type="search"
+                                placeholder="Tìm kiếm người dùng..."
+                                className="border-2 border-gray-300 rounded-lg p-2 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
                         </div>
                     </div>
                     <div className="flex gap-4">
                         <div>
+                            <input 
+                                type="file" 
+                                accept=".json, .csv" 
+                                ref={fileInputRef} 
+                                style={{ display: "none" }} 
+                                onChange={handleImport} 
+                            />
                             <button 
                                 className="border-2 border-black rounded-xl h-10 px-4 bg-blue-500 text-white font-bold" 
-                                onClick={() => setShowForm(true)}
+                                onClick={() => fileInputRef.current.click()}
                             >
                                 Import
                             </button>
@@ -149,7 +263,7 @@ function UserList() {
                         <div>
                             <button 
                                 className="border-2 border-black rounded-xl h-10 px-4 bg-blue-500 text-white font-bold" 
-                                onClick={() => setShowForm(true)}
+                                onClick={handleExportCSV}
                             >
                                 Export
                             </button>
@@ -161,7 +275,6 @@ function UserList() {
 
                 <div className="w-full border-2 border-black my-8 max-h-80 overflow-y-auto">
                     <table className="w-full border-collapse">
-                        {/* THEAD cố định */}
                         <thead className="bg-red-500 border-2 border-black sticky top-0 z-10">
                             <tr>
                                 <th className=" border-2 border-black">STT</th>
@@ -170,9 +283,7 @@ function UserList() {
                                 <th className="p-2 border-2 border-black">Hành động</th>
                             </tr>
                         </thead>
-
-                        {/* TBODY có scroll */}
-                        <tbody className="text-center bg-white" key={''} onClick={() => setShowForm(true)}>
+                        <tbody className="text-center bg-white" onClick={() => setShowForm(true)}>
                             {filteredUsers.length > 0 ? (
                                 filteredUsers.map((user, index) => (
                                     <tr className="border-2 border-black" key={index} onClick={() => handleEdit(index)}> 
@@ -186,7 +297,7 @@ function UserList() {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="3" className="p-2">Không có người dùng nào</td>
+                                    <td colSpan="4" className="p-2">Không có người dùng nào</td>
                                 </tr>
                             )}
                         </tbody>
@@ -195,7 +306,6 @@ function UserList() {
             </div>
         </div>
     );
-        
 }
 
 export default UserList;

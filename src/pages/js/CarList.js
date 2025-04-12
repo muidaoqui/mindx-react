@@ -35,15 +35,7 @@ function CarList() {
         setEditingIndex(index);
     };
     const handleCancelEdit = () => {
-        setCarid('');
-        setCarname('');
-        setCarmodel('');
-        setCarprice('');
-        setCarseats('');
-        setCarbrand('');
-        setCarImage('');
-        setCarDescription('');
-        setEditingIndex(null);
+        resetForm();
     };
 
     const handleSubmit = (e) => {
@@ -79,6 +71,17 @@ function CarList() {
         setCars(carsList);
         localStorage.setItem("cars", JSON.stringify(carsList));
 
+        resetForm()
+    };
+    const handleDelete = (index) => {
+        const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa xe này?");
+        if (!confirmDelete) return;
+        const newCars = cars.filter((car, i) => i !== index);
+        setCars(newCars);
+        localStorage.setItem("cars", JSON.stringify(newCars));
+        if (editingIndex === index) resetForm();
+    };
+    const resetForm = () => {
         setCarid('');
         setCarname('');
         setCarmodel('');
@@ -88,11 +91,6 @@ function CarList() {
         setCarImage('');
         setCarDescription('');
         setEditingIndex(null);
-    };
-    const handleDelete = (index) => {
-        const newCars = cars.filter((car, i) => i !== index);
-        setCars(newCars);
-        localStorage.setItem("cars", JSON.stringify(newCars));
     };
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
@@ -109,9 +107,10 @@ function CarList() {
 
     const [searchQuery, setSearchQuery] = useState('');
     const filteredCars = cars.filter(car => 
-        car.carname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        car.carbrand.toLowerCase().includes(searchQuery.toLowerCase()) 
+        (car.carname && car.carname.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (car.carbrand && car.carbrand.toLowerCase().includes(searchQuery.toLowerCase()))
     );
+    
 
     const calculateAverageRating = (carRating) => {
         if (!carRating || carRating.length === 0) return 0;
@@ -140,24 +139,109 @@ function CarList() {
     const fileInputRef = useRef(null);
     const handleImport = (e) => {
         const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                try {
-                    const newData = JSON.parse(event.target.result);
+        if (!file) return;
+
+        const reader = new FileReader();
+        const fileExtension = file.name.split(".").pop().toLowerCase();
+
+        reader.onload = (event) => {
+            const content = event.target.result;
+
+            try {
+                if (fileExtension === "json") {
+                    const newData = JSON.parse(content);
                     if (!Array.isArray(newData)) {
-                        console.error("Dữ liệu không hợp lệ");
+                        console.error("Dữ liệu JSON không hợp lệ");
                         return;
                     }
-                    const updatedCars = [...cars, ...newData]; 
+                    const updatedCars = [...cars, ...newData];
                     setCars(updatedCars);
-                    localStorage.setItem("cars", JSON.stringify(updatedCars)); 
-                } catch (error) {
-                    console.error("Lỗi khi đọc file JSON", error);
+                    localStorage.setItem("cars", JSON.stringify(updatedCars));
+                    setMessage("Đã nhập dữ liệu JSON thành công");
+                    setMsgColor("green");
+
+                } else if (fileExtension === "csv") {
+                    const lines = content.split("\n").filter(line => line.trim() !== "");
+                    const headers = lines[0].split(",").map(h => h.trim());
+                    const validData = [];
+
+                    for (let i = 1; i < lines.length; i++) {
+                        const values = lines[i].split(",").map(v => v.trim());
+                        if (values.length === headers.length) {
+                            const car = {};
+                            headers.forEach((header, index) => {
+                                car[header] = values[index];
+                            });
+                            if (car.carname) { // Chỉ thêm xe nếu có tên
+                                validData.push({
+                                    ...car,
+                                    ratings: [], // đảm bảo có field ratings
+                                });
+                            }
+                        }                        
+                    }
+
+                    const updatedCars = [...cars, ...validData];
+                    setCars(updatedCars);
+                    localStorage.setItem("cars", JSON.stringify(updatedCars));
+                    setMessage("Đã nhập dữ liệu CSV thành công");
+                    setMsgColor("green");
+
+                } else {
+                    setMessage("Chỉ hỗ trợ file JSON và CSV");
+                    setMsgColor("red");
                 }
-            };
-            reader.readAsText(file);
+            } catch (error) {
+                console.error("Lỗi khi đọc file:", error);
+                setMessage("Lỗi khi đọc file");
+                setMsgColor("red");
+            }
+        };
+
+        reader.readAsText(file);
+    };
+
+    const handleExportCSV = () => {
+        if (cars.length === 0) {
+            setMessage("Không có dữ liệu để xuất.");
+            setMsgColor("red");
+            return;
         }
+    
+        // Lấy danh sách các headers từ key của object đầu tiên
+        const headers = Object.keys(cars[0]).filter(key => key !== 'ratings'); // loại ratings nếu không cần
+        const csvRows = [];
+    
+        // Tạo dòng header
+        csvRows.push(headers.join(","));
+    
+        // Tạo dòng dữ liệu
+        cars.forEach(car => {
+            const row = headers.map(header => {
+                // Escape dấu phẩy và dấu xuống dòng
+                let value = car[header] ?? "";
+                if (typeof value === "string") {
+                    value = `"${value.replace(/"/g, '""')}"`; // escape dấu "
+                }
+                return value;
+            });
+            csvRows.push(row.join(","));
+        });
+    
+        const csvContent = csvRows.join("\n");
+    
+        // Tạo file và tự động tải về
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+    
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "cars_export.csv";
+        link.click();
+        URL.revokeObjectURL(url);
+        
+        setMessage("Xuất CSV thành công!");
+        setMsgColor("green");
     };
     
 
@@ -193,7 +277,7 @@ function CarList() {
 
                                     <div className="flex justify-end mt-4">
                                         <button type="submit" className="border-2 border-black rounded-xl h-10 py-2 w-20 bg-green-500 font-bold mr-4">{editingIndex !== null ? "Cập nhật" : "Thêm" }</button>
-                                        <button type="button" className="border-2 border-black rounded-xl h-10 py-2 w-20" onClick={() => setShowForm(false)}>Hủy</button>
+                                        <button type="button" className="border-2 border-black rounded-xl h-10 py-2 w-20" onClick={() => {handleCancelEdit(); setShowForm(false);}} >Hủy</button>
                                     </div>
 
                                 </form>
@@ -213,7 +297,7 @@ function CarList() {
                         <div>
                             <input 
                                 type="file" 
-                                accept=".json" 
+                                accept=".json, .csv" 
                                 ref={fileInputRef} 
                                 style={{ display: "none" }} 
                                 onChange={handleImport} 
@@ -228,7 +312,7 @@ function CarList() {
                         <div>
                             <button 
                                 className="border-2 border-black rounded-xl h-10 px-4 bg-blue-500 text-white font-bold" 
-                                onClick={() => setShowForm(true)}
+                                onClick={handleExportCSV}
                             >
                                 Export
                             </button>
