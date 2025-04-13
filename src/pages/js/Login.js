@@ -27,6 +27,7 @@ function Login() {
             setMessage('Đăng nhập thành công!');
             setMsgColor('green');
             localStorage.setItem('islogin', true); // Lưu trạng thái đăng nhập
+            localStorage.setItem("loggedInUser", foundUser.email);
 
             setTimeout(() => {
                 navigate('/home'); // Chuyển hướng về trang chủ sau 1s
