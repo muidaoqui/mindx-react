@@ -78,7 +78,33 @@ const CarDetails = () => {
         }
     }, [percent, months, cars]);
 
-
+    const handleAddToCart = (cars) => {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      
+        const existingIndex = cart.findIndex((item) => item.id === cars.carid);
+      
+        if (existingIndex !== -1) {
+          // Xe đã có, cập nhật quantity +1 và totalPrice
+          cart[existingIndex].quantity += 1;
+          cart[existingIndex].totalPrice = cart[existingIndex].quantity * cart[existingIndex].carprice;
+        } else {
+          // Xe chưa có, thêm mới với quantity = 1
+          cart.push({
+            id: cars.carid, 
+            carname: cars.carname,
+            carImage: cars.carImage,
+            carDescription: cars.carDescription,
+            carprice: cars.carprice,
+            quantity: 1,
+            totalPrice: cars.carprice,
+          });
+        }
+      
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert("Đã thêm vào giỏ hàng!");
+    };
+      
+      
     
 
 
@@ -211,6 +237,11 @@ const CarDetails = () => {
                     <p className="flex justify-between">
                         Brand <span>{cars?.carbrand ? `${cars.carbrand}` : ""}</span>
                     </p>
+                </div>
+                <div className="w-full flex justify-center">
+                    <button className="bg-red-600 border rounded-lg h-10 text-white font-bold w-1/2 my-8" onClick={() => handleAddToCart(cars)}>
+                        Thêm Vao Giỏ Hàng
+                    </button>
                 </div>
             </div>       
         </div>

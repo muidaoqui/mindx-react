@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Thêm useNavigate để chuyển trang
+import { Link, useNavigate } from "react-router-dom"; 
 import logo from '../../img/logo.png';
 
 function Register() {
@@ -9,7 +9,7 @@ function Register() {
     const [confPass, setConfPass] = useState('');
     const [message, setMessage] = useState('');
     const [msgColor, setMsgColor] = useState('red');
-    const navigate = useNavigate(); // Dùng để chuyển hướng sau khi đăng ký thành công
+    const navigate = useNavigate(); 
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -92,7 +92,7 @@ function Register() {
 
                         <button type="submit" className="bg-red-600 border rounded-lg h-10 text-white font-bold">Đăng ký</button>
                         <p style={{ color: msgColor }}>{message}</p>
-                        <p>Bạn đã có tài khoản? <Link to="/Login" className="text-cyan-300">Đăng nhập</Link></p>
+                        <p>Bạn đã có tài khoản? <Link to="/login" className="text-cyan-300">Đăng nhập</Link></p>
                     </form>
                 </div>
 
