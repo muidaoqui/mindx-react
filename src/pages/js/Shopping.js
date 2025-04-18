@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import logo from '../../img/logo.png';
-import index, { sclass } from '../../img/mec/index';
+import { Link, useNavigate } from "react-router-dom"; 
 
 function Shopping() {
     const [cart, setCart] = useState([]);
-
+    const navigate = useNavigate(); 
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
         setCart(storedCart);
@@ -72,8 +72,15 @@ function Shopping() {
         return acc;
     }, 0);
 
+    const handlePay = () => {
+        const selectedCars = cart.filter(item => selectedItems.includes(item.id));
+        localStorage.setItem("pay", JSON.stringify(selectedCars));
+        navigate("/pay");
+    };
+    
+
     return (
-        <div className="mb-10">
+        <div className="mb-10 m-4">
             <div className="sticky top-0 z-10 flex justify-between items-center w-full h-20 bg-white shadow-md px-4 my-4">
                 <div className="flex items-center gap-4">
                     <img src={logo} alt="Logo" className="w-20 border-1 rounded-3xl" />
@@ -81,8 +88,11 @@ function Shopping() {
                 </div>
                 <div className="flex items-center gap-4">
                     <h2 className="text-xl font-bold text-cyan-400">Tổng cộng: {totalSelectedPrice.toLocaleString()} VND</h2>
-                    <button>
-                        <span className="text-white bg-red-600 rounded-lg px-4 py-2 hover:bg-red-700 ml-4">Thanh Toán</span>
+                    <button
+                        onClick={handlePay}
+                        className="bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700"
+                    >
+                        Thanh Toán
                     </button>
                 </div>
             </div>

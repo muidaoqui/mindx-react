@@ -12,6 +12,7 @@ import Shopping from './pages/js/Shopping';
 import Mercedes from './pages/js/Mercedes';
 import Footer from './components/Footer';
 import CarDetails from './pages/details/CarDetails';
+import Pay from './pages/js/Pay';
 function Layout() {
   const location = useLocation(); // Đặt useLocation() BÊN TRONG Router
 
@@ -31,6 +32,7 @@ function Layout() {
           <Route path="/user-list" element={<UserList />} />
           <Route path="/car-list" element={<CarList />} />
           <Route path="/shopping-cart" element={<Shopping />} />
+          <Route path="/pay" element={<Pay />} />
           <Route path="/mercedes" element={<Mercedes />} />
           <Route path="/car-details" element={<CarDetails />} />
           <Route path="/car-details/:carid" element={<CarDetails />} />
