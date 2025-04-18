@@ -95,14 +95,45 @@ function Pay() {
                 <p className="text-right my-4">Tổng cộng: {total.toLocaleString()} VND</p>
                 
             </div>
+            <h1 className="text-2xl mt-10">Phương thức thanh toán</h1>
+            <div className="my-4 flex justify-around text-left">
+                <div>
+                    <input className="bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700 mt-4" type="radio" name="payment" value="cash"  />
+                    <label className="ml-2">💵 Thanh toán khi nhận xe</label>
+                </div>
+                <div>
+                    <input className="bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700 mt-4" type="radio" name="payment" value="visa"  />
+                    <label className="ml-2">💳 Thanh toán bằng thẻ</label>
+                </div>
+            </div>
             <div>
-                <h1 className="text-2xl">Phương thức thanh toán</h1>
-                <button className="bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700 mt-4">
-                    💵 Thanh toán khi nhận xe
-                </button>
-                <button className="bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700 mt-4 ml-4">
-                    💳 Thanh toán bằng thẻ
-                </button>
+                <form>
+                    <h1 className="text-2xl">Thông tin thanh toán</h1>
+                    <div className="flex flex-col gap-2 mt-4">
+                        <label className="font-bold">Tên chủ thẻ:</label>
+                        <input type="text" className="border rounded px-2 py-1" placeholder="Nhập tên chủ thẻ" />
+                    </div>
+                    <div className="flex flex-col gap-2 mt-4">
+                        <label className="font-bold">Số thẻ:</label>
+                        <input type="text" className="border rounded px-2 py-1" placeholder="Nhập số thẻ" />
+                    </div>
+                    <div className="flex flex-col gap-2 mt-4">
+                        <label className="font-bold">Ngày hết hạn:</label>
+                        <input type="text" className="border rounded px-2 py-1" placeholder="MM/YY" />
+                    </div>
+                    <button type="submit" className="bg-red-600 absolute right-10 text-white rounded-lg px-4 py-2 hover:bg-red-700 mt-4">
+                        Xác nhận thanh toán
+                    </button>
+                </form>
+            </div>
+            <div className="my-10">
+                <h1 className="text-2xl">Lưu ý:</h1>
+                <ul className="list-disc list-inside mt-4">
+                    <li>Nếu bạn chọn thanh toán khi nhận xe thì vui lòng cọc trước 20% giá trị hóa đơn.</li>
+                    <li>Vui lòng kiểm tra kỹ thông tin trước khi thanh toán.</li>
+                    <li>Chúng tôi sẽ liên hệ với bạn để xác nhận đơn hàng.</li>
+                    <li>Cảm ơn bạn đã chọn MD Auto!</li>
+                </ul>
             </div>
         </div>
     );
