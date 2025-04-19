@@ -3,9 +3,19 @@ import bg2 from '../../img/bg2.jpg';
 
 function IntroSection() {
   return (
-    <section className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 flex items-center">
-      <div className="w-full max-w-7xl mx-auto px-10 flex flex-col md:flex-row items-center">
-        <img src={bg2} alt="Ảnh giới thiệu MD Autohunt" className="md:w-1/3 w-2/3 rounded-xl shadow-lg mb-6 md:mb-0 md:ml-10" />
+    <section className="relative min-h-screen flex items-center text-white snap-start">
+      {/* Ảnh nền */}
+      <img
+        src={bg2}
+        alt="Background"
+        className="absolute top-0 left-0 w-full h-full object-cover opacity-70 -z-10"
+      />
+
+      {/* Lớp phủ đen */}
+      <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 -z-10" />
+
+      {/* Nội dung */}
+      <div className="w-full max-w-7xl mx-auto px-10 py-16 flex flex-col md:flex-row items-center relative z-10">
         <div className="md:w-2/3">
           <h1 className="text-3xl font-bold mb-6">Giới Thiệu</h1>
           <p className="text-lg mb-4">

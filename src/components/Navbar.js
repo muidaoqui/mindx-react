@@ -6,7 +6,7 @@ function Navbar() {
   const loggedInEmail = localStorage.getItem("loggedInUser");
 
   return (
-    <div className="px-4 bg-gradient-to-r from-yellow-500 to-gray-900 w-full">
+    <div className="px-4 bg-gray-500 w-full">
       <nav className="flex items-center justify-between py-4 w-full">
         {/* Logo */}
         <div className="flex items-center gap-4">

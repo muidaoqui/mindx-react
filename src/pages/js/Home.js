@@ -7,7 +7,7 @@ import SupportBox from './SupportBox';
 function Home() {
   return (
     <div className="home">
-      <main className="home-main">
+      <main className="home-main snap-y snap-mandatory overflow-y-scroll h-screen">
         <PosterSection />
         <IntroSection />
         <StrategySection />
