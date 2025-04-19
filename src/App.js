@@ -13,8 +13,19 @@ import Mercedes from './pages/js/Mercedes';
 import Footer from './components/Footer';
 import CarDetails from './pages/details/CarDetails';
 import Pay from './pages/js/Pay';
+
+
+// ✅ COMPONENT CHẶN TRUY CẬP
+const ProtectedRoute = ({ children }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user || user.email !== "muidao156@gmail.com") {
+    return <Navigate to="/home" replace />;
+  }
+  return children;
+};
+
 function Layout() {
-  const location = useLocation(); // Đặt useLocation() BÊN TRONG Router
+  const location = useLocation();
 
   const hideNavAndFooter = location.pathname === "/login" || location.pathname === "/register";
 
@@ -29,8 +40,25 @@ function Layout() {
           <Route path="/home" element={<Home />} />
           <Route path="/volvo" element={<Volvo />} />
           <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/user-list" element={<UserList />} />
-          <Route path="/car-list" element={<CarList />} />
+          
+          {/* ✅ ROUTES CẦN XÁC THỰC */}
+          <Route
+            path="/user-list"
+            element={
+              <ProtectedRoute>
+                <UserList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/car-list"
+            element={
+              <ProtectedRoute>
+                <CarList />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="/shopping-cart" element={<Shopping />} />
           <Route path="/pay" element={<Pay />} />
           <Route path="/mercedes" element={<Mercedes />} />
@@ -48,7 +76,7 @@ function Layout() {
 function App() {
   return (
     <Router>
-      <Layout /> {/* Bọc Layout trong Router */}
+      <Layout />
     </Router>
   );
 }
