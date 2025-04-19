@@ -1,5 +1,5 @@
 import React from 'react';
-import bg2 from '../../img/bg2.jpg';
+import bg2 from '../../img/bg2.png';
 
 function IntroSection() {
   return (
@@ -15,14 +15,14 @@ function IntroSection() {
       <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 -z-10" />
 
       {/* Nội dung */}
-      <div className="w-full max-w-7xl mx-auto px-10 py-16 flex flex-col md:flex-row items-center relative z-10">
+      <div className=" w-full max-w-7xl mx-auto px-10 py-16 flex flex-col md:flex-row items-center absolute right-0 -translate-x-1/5 z-10">
         <div className="md:w-2/3">
-          <h1 className="text-3xl font-bold mb-6">Giới Thiệu</h1>
-          <p className="text-lg mb-4">
-            MD Autohunt là nền tảng chuyên cung cấp các dịch vụ và giải pháp săn tìm ô tô chất lượng...
+          <h1 className="text-4xl font-bold mb-6 text-cyan-400">Introduce</h1>
+          <p className="text-xl mb-4">
+            MD Autohunt is a trusted platform dedicated to helping users find the perfect car with ease and confidence.
           </p>
-          <p className="text-lg">
-            Chúng tôi cam kết mang đến cho khách hàng sự an tâm với các dịch vụ kiểm định xe chuyên sâu...
+          <p className="text-xl">
+            With a mission to simplify and elevate the car-buying experience, MD Autohunt combines technology, reliability, and customer care to deliver outstanding value.
           </p>
         </div>
       </div>

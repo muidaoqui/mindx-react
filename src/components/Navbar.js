@@ -71,8 +71,8 @@ function Navbar() {
             { name: "Lexus", link: "/lexus" },
             { name: "Audi", link: "/audi" },
             { name: "Maserati", link: "/maserati" },
-            { name: "Phụ Kiện", link: "/phu-kien" },
-            { name: "Tin Tức", link: "/tin-tuc" },
+            { name: "Accessory", link: "/phu-kien" },
+            { name: "News", link: "/tin-tuc" },
           ].map((item) => (
             <li key={item.name} className="text-center">
               <a
@@ -110,8 +110,8 @@ function Navbar() {
           { name: "Lexus", link: "/lexus" },
           { name: "Audi", link: "/audi" },
           { name: "Maserati", link: "/maserati" },
-          { name: "Phụ Kiện", link: "/phu-kien" },
-          { name: "Tin Tức", link: "/tin-tuc" },
+          { name: "Accessory", link: "/phu-kien" },
+          { name: "News", link: "/tin-tuc" },
         ].map((item) => (
           <li key={item.name}>
             <a
