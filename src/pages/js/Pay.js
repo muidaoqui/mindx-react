@@ -135,6 +135,30 @@ function Pay() {
                     <li>Cảm ơn bạn đã chọn MD Auto!</li>
                 </ul>
             </div>
+            <div>
+                <form>
+                    <div className="flex justify-between gap-2 mt-4">
+                        <label className="font-bold">Tên chủ thẻ:</label>
+                        <input type="text" className="border rounded px-2 py-1 w-5/6" placeholder="Nhập tên chủ thẻ" />
+                    </div>
+                    <div className="flex justify-between gap-2 mt-4">
+                        <label className="font-bold">Số thẻ:</label>
+                        <input type="text" className="border rounded px-2 py-1 w-5/6" placeholder="Nhập số thẻ" />
+                    </div>
+                    <div className="flex justify-between gap-2 mt-4">
+                        <label className="font-bold">Ngày hết hạn:</label>
+                        <input type="text" className="border rounded px-2 py-1 w-5/6" placeholder="MM/YY" />
+                    </div>
+                    <div className="flex justify-between gap-2 mt-4">
+                        <label className="font-bold">CVV:</label>
+                        <input type="text" className="border rounded px-2 py-1 w-5/6" placeholder="Nhập CVV" />
+                    </div>
+                    <button type="submit" className="bg-green-600 text-white rounded-lg px-4 py-2 hover:bg-green-700 mt-4">
+                        ✅ Thanh toán
+                    </button>
+                </form>
+            </div>
+
         </div>
     );
 }
