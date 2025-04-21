@@ -26,11 +26,10 @@ function Login() {
         if (foundUser) {
             setMessage('Đăng nhập thành công!');
             setMsgColor('green');
-            localStorage.setItem('islogin', true); // Lưu trạng thái đăng nhập
-            localStorage.setItem("loggedInUser", foundUser.email);
+            localStorage.setItem("user", JSON.stringify(foundUser)); 
 
             setTimeout(() => {
-                navigate('/home'); // Chuyển hướng về trang chủ sau 1s
+                navigate('/home'); 
             }, 1000);
         } else {
             setMessage('Email hoặc mật khẩu không đúng.');

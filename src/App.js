@@ -15,7 +15,6 @@ import CarDetails from './pages/details/CarDetails';
 import Pay from './pages/js/Pay';
 
 
-// ✅ COMPONENT CHẶN TRUY CẬP
 const ProtectedRoute = ({ children }) => {
   const user = JSON.parse(localStorage.getItem("user"));
   if (!user || user.email !== "muidao156@gmail.com") {
