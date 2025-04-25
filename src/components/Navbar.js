@@ -4,7 +4,6 @@ import logo from "../img/logo.png";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const loggedInEmail = localStorage.getItem("loggedInUser");
-
   return (
     <div className="px-4 bg-gray-500 w-full">
       <nav className="flex items-center justify-between py-4 w-full">

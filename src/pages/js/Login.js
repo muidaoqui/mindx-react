@@ -26,8 +26,8 @@ function Login() {
         if (foundUser) {
             setMessage('Đăng nhập thành công!');
             setMsgColor('green');
-            localStorage.setItem("user", JSON.stringify(foundUser)); 
-
+            localStorage.setItem("users", JSON.stringify(foundUser)); 
+            localStorage.setItem("loggedInUser", foundUser.email);
             setTimeout(() => {
                 navigate('/home'); 
             }, 1000);
