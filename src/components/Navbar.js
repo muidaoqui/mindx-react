@@ -29,7 +29,7 @@ function Navbar() {
 
         {/* Icons */}
         <div className="flex items-center space-x-4 text-xl">
-          {loggedInEmail === "muidao156@gmail.com" && (
+          {loggedInEmail?.toLowerCase() === "muidao156@gmail.com" && (
             <div className="hidden md:flex space-x-4">
               <a href="/user-list" className="text-yellow-500 hover:text-cyan-600">
                 <i className="fa-solid fa-users"></i>
@@ -82,18 +82,20 @@ function Navbar() {
               </a>
             </li>
           ))}
-          <ul>
-            <li className="text-center">
-              <a href="/user-list" className="hover:text-cyan-300 bg-gradient-to-r from-gray-100 to-yellow-300 bg-clip-text text-transparent transition duration-300">
-                Danh Sách Người Dùng
-              </a>
-            </li>
-            <li className="text-center">
-              <a href="/car-list" className="hover:text-cyan-300 bg-gradient-to-r from-gray-100 to-yellow-300 bg-clip-text text-transparent transition duration-300">
-                Danh Sach Xe
-              </a>
-            </li>
-          </ul>
+          {loggedInEmail?.toLowerCase() === "muidao156@gmail.com" && (
+            <ul>
+              <li className="text-center">
+                <a href="/user-list" className="hover:text-cyan-300 bg-gradient-to-r from-gray-100 to-yellow-300 bg-clip-text text-transparent transition duration-300">
+                  Danh Sách Người Dùng
+                </a>
+              </li>
+              <li className="text-center">
+                <a href="/car-list" className="hover:text-cyan-300 bg-gradient-to-r from-gray-100 to-yellow-300 bg-clip-text text-transparent transition duration-300">
+                  Danh Sách Xe
+                </a>
+              </li>
+            </ul>
+          )}
         </ul>
       </div>
 

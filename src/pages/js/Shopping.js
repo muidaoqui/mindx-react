@@ -73,6 +73,11 @@ function Shopping() {
     }, 0);
 
     const handlePay = () => {
+        if (selectedItems.length === 0) {
+            alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán!");
+            return; 
+        }
+    
         const selectedCars = cart.filter(item => selectedItems.includes(item.id));
         localStorage.setItem("pay", JSON.stringify(selectedCars));
         navigate("/pay");
@@ -90,7 +95,8 @@ function Shopping() {
                     <h2 className="text-xl font-bold text-cyan-400">Tổng cộng: {totalSelectedPrice.toLocaleString()} VND</h2>
                     <button
                         onClick={handlePay}
-                        className="bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700"
+                        className={`bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700 ${selectedItems.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+                        disabled={selectedItems.length === 0}
                     >
                         Thanh Toán
                     </button>

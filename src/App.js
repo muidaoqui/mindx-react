@@ -16,8 +16,8 @@ import Pay from './pages/js/Pay';
 
 
 const ProtectedRoute = ({ children }) => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (!user || user.email !== "muidao156@gmail.com") {
+  const loggedInEmail = localStorage.getItem("loggedInUser");
+  if (loggedInEmail?.toLowerCase() !== "muidao156@gmail.com") {
     return <Navigate to="/home" replace />;
   }
   return children;
@@ -39,8 +39,6 @@ function Layout() {
           <Route path="/home" element={<Home />} />
           <Route path="/volvo" element={<Volvo />} />
           <Route path="/" element={<Navigate to="/login" replace />} />
-          
-          {/* ✅ ROUTES CẦN XÁC THỰC */}
           <Route
             path="/user-list"
             element={
@@ -57,7 +55,6 @@ function Layout() {
               </ProtectedRoute>
             }
           />
-
           <Route path="/shopping-cart" element={<Shopping />} />
           <Route path="/pay" element={<Pay />} />
           <Route path="/mercedes" element={<Mercedes />} />

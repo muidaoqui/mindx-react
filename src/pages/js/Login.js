@@ -11,31 +11,38 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        let users = JSON.parse(localStorage.getItem('users')) || []; // Đọc danh sách users từ localStorage
-
+    
+        let users = JSON.parse(localStorage.getItem('users'));
+        if (!Array.isArray(users)) {
+            setMessage("Dữ liệu người dùng bị lỗi. Hãy đăng ký lại.");
+            setMsgColor("red");
+            return;
+        }
+    
         if (!email || !pass) {
             setMessage('Vui lòng điền đầy đủ thông tin.');
             setMsgColor('red');
             return;
         }
-
-        // Tìm user có email & pass trùng khớp
+    
         let foundUser = users.find(user => user.email === email && user.pass === pass);
-
+    
         if (foundUser) {
             setMessage('Đăng nhập thành công!');
             setMsgColor('green');
-            localStorage.setItem("users", JSON.stringify(foundUser)); 
             localStorage.setItem("loggedInUser", foundUser.email);
             setTimeout(() => {
-                navigate('/home'); 
+                navigate('/home');
             }, 1000);
         } else {
             setMessage('Email hoặc mật khẩu không đúng.');
             setMsgColor('red');
         }
+    
+        setTimeout(() => setMessage(""), 3000);
     };
+    
+    
 
     return (
         <div className="w-full flex justify-center  h-screen">
