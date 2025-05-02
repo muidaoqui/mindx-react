@@ -1,19 +1,31 @@
 import React, { useState, useEffect } from "react";
 import logo from '../../img/logo.png';
-import { Link, useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom"; 
 
 function Shopping() {
     const [cart, setCart] = useState([]);
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [selectAll, setSelectAll] = useState(false);
     const navigate = useNavigate(); 
-    useEffect(() => {
-        const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-        setCart(storedCart);
-    }, []);
 
-    // ✅ Hàm chuyển giá kiểu "1.000.000.000" -> 1000000000
+    const currentUserEmail = localStorage.getItem("loggedInUser");
+
+    // Đọc giỏ hàng riêng cho từng user
+    useEffect(() => {
+        if (!currentUserEmail) return;
+        const storedCart = JSON.parse(localStorage.getItem(`cart-${currentUserEmail}`)) || [];
+        setCart(storedCart);
+    }, [currentUserEmail]);
+
+    // Ghi giỏ hàng vào localStorage riêng
+    const updateCartStorage = (updatedCart) => {
+        if (!currentUserEmail) return;
+        localStorage.setItem(`cart-${currentUserEmail}`, JSON.stringify(updatedCart));
+    };
+
     const parsePriceDotFormat = (priceString) => {
         if (typeof priceString === "string") {
-            return Number(priceString.replace(/\./g, ""));
+            return Number(priceString.replace(/\./g, "").replace(/,/g, ""));
         }
         return Number(priceString);
     };
@@ -22,26 +34,19 @@ function Shopping() {
         const updatedCart = cart.map(item => {
             if (item.id === id) {
                 const newQuantity = Math.max(1, item.quantity + delta);
-                return {
-                    ...item,
-                    quantity: newQuantity,
-                };
+                return { ...item, quantity: newQuantity };
             }
             return item;
         });
-
         setCart(updatedCart);
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        updateCartStorage(updatedCart);
     };
 
     const handleDeleteItem = (id) => {
         const updatedCart = cart.filter(item => item.id !== id);
         setCart(updatedCart);
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-    };    
-
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [selectAll, setSelectAll] = useState(false);
+        updateCartStorage(updatedCart);
+    };
 
     const handleSelectAll = () => {
         if (selectAll) {
@@ -63,11 +68,11 @@ function Shopping() {
                 setSelectAll(true);
             }
         }
-    };  
-    
+    };
+
     const totalSelectedPrice = cart.reduce((acc, item) => {
         if (selectedItems.includes(item.id)) {
-            return acc + item.quantity * Number(item.carprice.toString().replace(/,/g, '').replace(/\./g, ''));
+            return acc + item.quantity * parsePriceDotFormat(item.carprice);
         }
         return acc;
     }, 0);
@@ -75,14 +80,13 @@ function Shopping() {
     const handlePay = () => {
         if (selectedItems.length === 0) {
             alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán!");
-            return; 
+            return;
         }
-    
+
         const selectedCars = cart.filter(item => selectedItems.includes(item.id));
         localStorage.setItem("pay", JSON.stringify(selectedCars));
         navigate("/pay");
     };
-    
 
     return (
         <div className="mb-10 m-4">
@@ -102,62 +106,48 @@ function Shopping() {
                     </button>
                 </div>
             </div>
-            <div className="relative top-0 left-0 right-0 bottom-0 flex items-center bg-gray-100 justify-between">
+            <div className="relative flex items-center bg-gray-100 justify-between px-4 py-2">
                 <div>
-                    <input type="checkbox"
-                        className="w-4 h-4 m-4"
+                    <input
+                        type="checkbox"
+                        className="w-4 h-4 m-2"
                         checked={selectAll}
-                        onChange={handleSelectAll} 
+                        onChange={handleSelectAll}
                     />
-                    <span className="text-lg text-black ">Chọn tất cả</span>
+                    <span className="text-lg text-black">Chọn tất cả</span>
                 </div>
-                <div className="flex justify-around items-center w-1/2 h-8 px-4 my-4 ">
+                <div className="flex justify-around items-center w-1/2 h-8">
                     <h2>Đơn Giá</h2>
                     <h2>Số Lượng</h2>
                     <h2>Thành Tiền</h2>
                     <h2>Thao Tác</h2>
                 </div>
             </div>
-            <ul className="">
+            <ul>
                 {cart.map((cars, index) => (
-                    <li key={index} className="relative top-0 left-0 right-0 bottom-0 flex items-center bg-gray-100 justify-between">
-                        <div className="flex items-center w-1/2 h-20 px-16 my-4 gap-4">
-                        <input
-                            type="checkbox"
-                            className="w-4 h-4 m-4"
-                            checked={selectedItems.includes(cars.id)}
-                            onChange={() => handleSelectItem(cars.id)}
-                        />
-                            <img src={cars.carImage} alt={cars.carname} className="w-40 border-1 rounded-3xl " />
-                            <div className="h-20 px-4 my-4 ">
+                    <li key={index} className="flex items-center bg-gray-100 justify-between px-4 py-4 my-2 rounded">
+                        <div className="flex items-center w-1/2 gap-4">
+                            <input
+                                type="checkbox"
+                                className="w-4 h-4"
+                                checked={selectedItems.includes(cars.id)}
+                                onChange={() => handleSelectItem(cars.id)}
+                            />
+                            <img src={cars.carImage} alt={cars.carname} className="w-40 border rounded-2xl" />
+                            <div>
                                 <h3 className="text-xl font-bold">{cars.carname}</h3>
                                 <h4>{cars.carDescription}</h4>
                             </div>
                         </div>
-                        <div className="flex justify-around items-center w-1/2 h-8 px-4 my-4 text-center mr-12">
+                        <div className="flex justify-around items-center w-1/2 text-center">
                             <h2>{parsePriceDotFormat(cars.carprice).toLocaleString()} VND</h2>
                             <div className="flex items-center space-x-2">
-                                <button
-                                    onClick={() => updateQuantity(cars.id, -1)}
-                                    className="bg-gray-300 px-2 rounded hover:bg-gray-400"
-                                >
-                                    -
-                                </button>
+                                <button onClick={() => updateQuantity(cars.id, -1)} className="bg-gray-300 px-2 rounded hover:bg-gray-400">-</button>
                                 <span>{cars.quantity}</span>
-                                <button
-                                    onClick={() => updateQuantity(cars.id, 1)}
-                                    className="bg-gray-300 px-2 rounded hover:bg-gray-400"
-                                >
-                                    +
-                                </button>
+                                <button onClick={() => updateQuantity(cars.id, 1)} className="bg-gray-300 px-2 rounded hover:bg-gray-400">+</button>
                             </div>
                             <h2>{(cars.quantity * parsePriceDotFormat(cars.carprice)).toLocaleString()} VND</h2>
-                            <button
-                                className="bg-red-600 text-white rounded-lg px-4 py-2  hover:bg-red-700"
-                                onClick={() => handleDeleteItem(cars.id)}
-                            >
-                                Xóa
-                            </button>
+                            <button onClick={() => handleDeleteItem(cars.id)} className="bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700">Xóa</button>
                         </div>
                     </li>
                 ))}

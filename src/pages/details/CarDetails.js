@@ -79,7 +79,14 @@ const CarDetails = () => {
     }, [percent, months, cars]);
 
     const handleAddToCart = (cars) => {
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const loggedInEmail = localStorage.getItem("loggedInUser");
+        if (!loggedInEmail) {
+            alert("Vui lòng đăng nhập trước khi thêm vào giỏ hàng!");
+            return;
+        }
+    
+        const cartKey = `cart-${loggedInEmail}`;
+        const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
     
         const price = Number(cars.carprice.toString().replace(/[.,]/g, '')); // Chuyển giá thành số
     
@@ -103,9 +110,10 @@ const CarDetails = () => {
             });
         }
     
-        localStorage.setItem("cart", JSON.stringify(cart));
+        localStorage.setItem(cartKey, JSON.stringify(cart));
         alert("Đã thêm vào giỏ hàng!");
     };
+    
     
     return (
         <div>
