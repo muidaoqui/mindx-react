@@ -33,73 +33,92 @@ function Register() {
             return;
         }
 
-        users.push({ fullname, email, pass }); // Lưu thông tin người dùng
+        users.push({ fullname, email, pass });
         localStorage.setItem("users", JSON.stringify(users));
 
         setMessage("Đăng ký thành công!");
         setMsgColor('green');
 
-        // Reset form sau khi đăng ký thành công
         setFullname('');
         setEmail('');
         setPass('');
         setConfPass('');
 
-        // Chuyển hướng sang trang đăng nhập sau 1.5 giây
         setTimeout(() => {
             navigate('/login');
         }, 1500);
     };
 
     return (
-        <div className=" w-full flex justify-center  h-screen">
-            <div className="flex my-auto w-full max-w-2xl overflow-hidden rounded-xl shadow-lg h-2/3">
-                <div className="flex flex-col w-full h-full align-center justify-center border border-gray-300 rounded-l-xl">
-                    
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-2 mx-6">
-                        <h2 className="font-mono text-3xl font-bold text-center mt-6 text-red-500">Đăng ký</h2>
-                        <label>Họ và tên</label>
-                        <input className="bg-white-500 h-8 border rounded-lg" 
-                            type="text" 
-                            placeholder="Nhập họ và tên"
-                            value={fullname}
-                            onChange={(e) => setFullname(e.target.value)}
-                        />
+        <div className="w-full flex justify-center items-center min-h-screen bg-gray-50 px-4">
+            <div className="flex flex-col md:flex-row w-full max-w-2xl overflow-hidden rounded-xl shadow-lg bg-white">
+                
+                <div className="flex flex-col justify-center w-full p-6 md:p-10">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                        <h2 className="text-3xl font-bold text-center text-red-600">Đăng ký</h2>
 
-                        <label>Email</label>
-                        <input className="bg-white-500 h-8 border rounded-lg" 
-                            type="email" 
-                            placeholder="Nhập email" 
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
+                        <div>
+                            <label className="block mb-1">Họ và tên</label>
+                            <input
+                                type="text"
+                                className="w-full h-10 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                                placeholder="Nhập họ và tên"
+                                value={fullname}
+                                onChange={(e) => setFullname(e.target.value)}
+                            />
+                        </div>
 
-                        <label>Mật khẩu</label>
-                        <input className="bg-white-500 h-8 border rounded-lg" 
-                            type="password" 
-                            placeholder="Nhập mật khẩu"
-                            value={pass}
-                            onChange={(e) => setPass(e.target.value)}
-                        />
+                        <div>
+                            <label className="block mb-1">Email</label>
+                            <input
+                                type="email"
+                                className="w-full h-10 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                                placeholder="Nhập email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </div>
 
-                        <label>Nhập lại mật khẩu</label>
-                        <input className="bg-white-500 h-8 border rounded-lg" 
-                            type="password" 
-                            placeholder="Nhập lại mật khẩu"
-                            value={confPass}
-                            onChange={(e) => setConfPass(e.target.value)}
-                        />
+                        <div>
+                            <label className="block mb-1">Mật khẩu</label>
+                            <input
+                                type="password"
+                                className="w-full h-10 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                                placeholder="Nhập mật khẩu"
+                                value={pass}
+                                onChange={(e) => setPass(e.target.value)}
+                            />
+                        </div>
 
-                        <button type="submit" className="bg-red-600 border rounded-lg h-10 text-white font-bold">Đăng ký</button>
-                        <p style={{ color: msgColor }}>{message}</p>
-                        <p>Bạn đã có tài khoản? <Link to="/login" className="text-cyan-300">Đăng nhập</Link></p>
+                        <div>
+                            <label className="block mb-1">Nhập lại mật khẩu</label>
+                            <input
+                                type="password"
+                                className="w-full h-10 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                                placeholder="Nhập lại mật khẩu"
+                                value={confPass}
+                                onChange={(e) => setConfPass(e.target.value)}
+                            />
+                        </div>
+
+                        <button type="submit" className="bg-red-600 hover:bg-red-700 text-white h-10 rounded-lg font-semibold">
+                            Đăng ký
+                        </button>
+
+                        {message && (
+                            <p className={`text-sm text-${msgColor}-600 text-center`}>{message}</p>
+                        )}
+
+                        <p className="text-center text-sm">
+                            Bạn đã có tài khoản? <Link to="/login" className="text-cyan-600 hover:underline">Đăng nhập</Link>
+                        </p>
                     </form>
                 </div>
 
-                <div className="bg-red-600 w-full h-full flex flex-col align-center justify-center rounded-r-xl  gap-6">
-                    <img src={logo} className="w-20 mx-auto rounded-xl" alt="Logo" />
-                    <h3 className="text-xl text-center">AUTOHUNT</h3>
-                    <h5 className="text-center">Nơi giấc mơ bốn bánh khởi đầu!</h5>
+                <div className="bg-red-600 flex flex-col justify-center items-center p-6 md:p-10 text-white md:rounded-r-xl">
+                    <img src={logo} alt="Logo" className="w-20 rounded-xl mb-4" />
+                    <h3 className="text-2xl font-bold">AUTOHUNT</h3>
+                    <p className="text-center mt-2">Nơi giấc mơ bốn bánh khởi đầu!</p>
                 </div>
             </div>
         </div>

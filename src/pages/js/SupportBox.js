@@ -8,9 +8,12 @@ function SupportBox() {
         <img src={ava} alt="Hỗ trợ viên Mui Dao" className="w-16 h-16 rounded-full border border-gray-800 shadow-lg" />
       </div>
       <div className="pl-20 pt-2">
-        <h3 className="text-black font-semibold">Mui Dao</h3>
-        <p className="text-gray-700 text-center text-sm">Service</p>
+        <a href="https://www.facebook.com/mui.ao.714373">
+          <h3 className="text-black font-semibold">Mui Dao</h3>
+          <p className="text-gray-700 text-center text-sm">Service</p>
+        </a>
       </div>
+      
     </div>
   );
 }

@@ -45,9 +45,6 @@ function Pay() {
         return () => clearInterval(interval);
     }, []);
 
-    const user = JSON.parse(localStorage.getItem("users"));
-    const payList = JSON.parse(localStorage.getItem("pay")) || [];
-
     const generateInvoice = (cartItems, userEmail, customerName, customerPhone, customerAddress, paymentMethod, total) => {
         const doc = new jsPDF();
         const currentDate = new Date().toLocaleDateString("vi-VN");
@@ -112,15 +109,10 @@ function Pay() {
 
             doc.setFont("helvetica", "normal");
             doc.setFontSize(12);
-            // Chữ ký
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(12);
 
-            // Buyer
             doc.text("Buyer", 60, finalY + 30);
             doc.text("(Customer signature)", 55, finalY + 40);
 
-            // Seller
             doc.text("Seller", 140, finalY + 30);
             doc.text("(Specimen signature)", 135, finalY + 40);
 
@@ -130,36 +122,43 @@ function Pay() {
 
     const handlePayment = () => {
         if (loading) return;
+
+        if (!customerName || !customerPhone || !customerAddress) {
+            toast.error("Vui lòng điền đầy đủ thông tin khách hàng!", { position: "top-center" });
+            return;
+        }
+
         setLoading(true);
-    
         const loggedInEmail = localStorage.getItem("loggedInUser") || "Không xác định";
-    
+
+        if (!loggedInEmail || loggedInEmail === "Không xác định") {
+            toast.error("Không tìm thấy tài khoản người dùng!", { position: "top-center" });
+            setLoading(false);
+            return;
+        }
+
         generateInvoice(
             selectedItems,
-            loggedInEmail, 
+            loggedInEmail,
             customerName,
             customerPhone,
             customerAddress,
             paymentMethod,
             total
         );
-    
+
         localStorage.removeItem("pay");
-    
+
         toast.success("Thanh toán thành công! Bạn sẽ được chuyển hướng...", {
             position: "top-center",
             autoClose: 2000,
         });
-    
-        setTimeout(() => {
-            navigate("/home");
-        }, 2500);
+
+        setTimeout(() => navigate("/home"), 2500);
     };
-    
-    
 
     return (
-        <div className="m-4">
+        <div className="m-4 max-w-6xl mx-auto px-2">
             <div className="sticky top-0 z-10 flex justify-between items-center w-full h-20 bg-white shadow-md px-4 my-4">
                 <div className="flex items-center gap-4">
                     <img src={logo} alt="Logo" className="w-20 border-1 rounded-3xl" />
@@ -168,7 +167,7 @@ function Pay() {
             </div>
 
             <div className="text-xl text-black rounded shadow-xl p-4 bg-gray-100">
-                <div className="flex justify-around text-center gap-4">
+                <div className="flex flex-col sm:flex-row justify-around text-center gap-4">
                     <div>
                         <h2 className="font-bold">MD Auto</h2>
                         <p>Địa chỉ: 39 HTLO, Quận 5, TP.HCM</p>
@@ -181,50 +180,48 @@ function Pay() {
                 </div>
 
                 <div className="my-10 flex flex-col justify-around text-left space-y-4">
-                    <div className="flex justify-between gap-2">
-                        <label className="font-bold">Tên khách hàng:</label>
-                        <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} className="border rounded px-2 py-1 w-5/6" placeholder="Nhập tên khách hàng" />
-                    </div>
-                    <div className="flex justify-between gap-2">
-                        <label className="font-bold">Số điện thoại:</label>
-                        <input type="text" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} className="border rounded px-2 py-1 w-5/6" placeholder="Nhập số điện thoại" />
-                    </div>
-                    <div className="flex justify-between gap-2">
-                        <label className="font-bold">Địa chỉ:</label>
-                        <input type="text" value={customerAddress} onChange={(e) => setCustomerAddress(e.target.value)} className="border rounded px-2 py-1 w-5/6" placeholder="Nhập địa chỉ" />
-                    </div>
+                    {[["Tên khách hàng", customerName, setCustomerName], ["Số điện thoại", customerPhone, setCustomerPhone], ["Địa chỉ", customerAddress, setCustomerAddress]].map(([label, value, setter], idx) => (
+                        <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <label className="font-bold whitespace-nowrap">{label}:</label>
+                            <input type="text" value={value} onChange={(e) => setter(e.target.value)} className="border rounded px-2 py-1 w-full sm:w-5/6" placeholder={`Nhập ${label.toLowerCase()}`} />
+                        </div>
+                    ))}
                 </div>
 
-                <div>
-                    <table className="w-full border-collapse border border-gray-300 mt-4 text-right">
-                        <thead>
-                            <tr className="bg-gray-200">
-                                <th className="border border-gray-300 px-4 py-2">STT</th>
-                                <th className="border border-gray-300 px-4 py-2">Tên xe</th>
-                                <th className="border border-gray-300 px-4 py-2">Giá</th>
-                                <th className="border border-gray-300 px-4 py-2">Số lượng</th>
-                                <th className="border border-gray-300 px-4 py-2">Thành tiền</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {selectedItems.map((item, index) => (
-                                <tr key={index} className="hover:bg-gray-100">
-                                    <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{item.carname}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{item.carprice.toLocaleString()} VND</td>
-                                    <td className="border border-gray-300 px-4 py-2">{item.quantity}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{item.totalPrice.toLocaleString()} VND</td>
+                <div className="overflow-x-auto mt-4">
+                    {selectedItems.length === 0 ? (
+                        <p className="text-center text-gray-500 italic">Không có sản phẩm nào để thanh toán.</p>
+                    ) : (
+                        <table className="min-w-[600px] w-full border-collapse border border-gray-300 text-right">
+                            <thead>
+                                <tr className="bg-gray-200">
+                                    <th className="border border-gray-300 px-4 py-2">STT</th>
+                                    <th className="border border-gray-300 px-4 py-2">Tên xe</th>
+                                    <th className="border border-gray-300 px-4 py-2">Giá</th>
+                                    <th className="border border-gray-300 px-4 py-2">Số lượng</th>
+                                    <th className="border border-gray-300 px-4 py-2">Thành tiền</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {selectedItems.map((item, index) => (
+                                    <tr key={index} className="hover:bg-gray-100">
+                                        <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{item.carname}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{item.carprice.toLocaleString()} VND</td>
+                                        <td className="border border-gray-300 px-4 py-2">{item.quantity}</td>
+                                        <td className="border border-gray-300 px-4 py-2">{item.totalPrice.toLocaleString()} VND</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
                 </div>
                 <p className="text-right my-4">Tổng cộng: {total.toLocaleString()} VND</p>
             </div>
 
             <div className="p-4">
                 <h1 className="text-2xl my-4">Phương thức thanh toán</h1>
-                <div className="flex gap-4 mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
                     {[{ value: "cod", label: "💵 Thanh toán khi nhận xe" }, { value: "card", label: "💳 Thanh toán bằng thẻ" }, { value: "installment", label: "🏦 Trả góp qua ngân hàng" }].map(method => (
                         <button
                             key={method.value}

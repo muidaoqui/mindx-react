@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from "react";
 import logo from '../../img/logo.png';
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 function Shopping() {
     const [cart, setCart] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     const currentUserEmail = localStorage.getItem("loggedInUser");
 
-    // Đọc giỏ hàng riêng cho từng user
     useEffect(() => {
         if (!currentUserEmail) return;
         const storedCart = JSON.parse(localStorage.getItem(`cart-${currentUserEmail}`)) || [];
         setCart(storedCart);
     }, [currentUserEmail]);
 
-    // Ghi giỏ hàng vào localStorage riêng
     const updateCartStorage = (updatedCart) => {
         if (!currentUserEmail) return;
         localStorage.setItem(`cart-${currentUserEmail}`, JSON.stringify(updatedCart));
@@ -89,14 +87,16 @@ function Shopping() {
     };
 
     return (
-        <div className="mb-10 m-4">
-            <div className="sticky top-0 z-10 flex justify-between items-center w-full h-20 bg-white shadow-md px-4 my-4">
+        <div className="mb-10 mx-2 sm:mx-4">
+            <div className="sticky top-0 z-10 flex flex-col sm:flex-row justify-between items-center w-full h-auto bg-white shadow-md px-4 py-3 mb-4 gap-2">
                 <div className="flex items-center gap-4">
-                    <img src={logo} alt="Logo" className="w-20 border-1 rounded-3xl" />
-                    <h1 className="text-xl font-bold text-cyan-400">Giỏ Hàng</h1>
+                    <img src={logo} alt="Logo" className="w-16 sm:w-20 border-1 rounded-3xl" />
+                    <h1 className="text-lg sm:text-xl font-bold text-cyan-400">Giỏ Hàng</h1>
                 </div>
-                <div className="flex items-center gap-4">
-                    <h2 className="text-xl font-bold text-cyan-400">Tổng cộng: {totalSelectedPrice.toLocaleString()} VND</h2>
+                <div className="flex flex-col sm:flex-row items-center gap-2">
+                    <h2 className="text-base sm:text-xl font-bold text-cyan-400 text-center">
+                        Tổng cộng: {totalSelectedPrice.toLocaleString()} VND
+                    </h2>
                     <button
                         onClick={handlePay}
                         className={`bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700 ${selectedItems.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
@@ -106,7 +106,8 @@ function Shopping() {
                     </button>
                 </div>
             </div>
-            <div className="relative flex items-center bg-gray-100 justify-between px-4 py-2">
+
+            <div className="bg-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 py-2 rounded">
                 <div>
                     <input
                         type="checkbox"
@@ -114,40 +115,49 @@ function Shopping() {
                         checked={selectAll}
                         onChange={handleSelectAll}
                     />
-                    <span className="text-lg text-black">Chọn tất cả</span>
+                    <span className="text-sm sm:text-lg text-black">Chọn tất cả</span>
                 </div>
-                <div className="flex justify-around items-center w-1/2 h-8">
-                    <h2>Đơn Giá</h2>
-                    <h2>Số Lượng</h2>
-                    <h2>Thành Tiền</h2>
-                    <h2>Thao Tác</h2>
+                <div className="hidden sm:flex justify-around items-center w-1/2 h-8">
+                    <h2 className="w-1/4 text-center">Đơn Giá</h2>
+                    <h2 className="w-1/4 text-center">Số Lượng</h2>
+                    <h2 className="w-1/4 text-center">Thành Tiền</h2>
+                    <h2 className="w-1/4 text-center">Thao Tác</h2>
                 </div>
             </div>
+
             <ul>
                 {cart.map((cars, index) => (
-                    <li key={index} className="flex items-center bg-gray-100 justify-between px-4 py-4 my-2 rounded">
-                        <div className="flex items-center w-1/2 gap-4">
-                            <input
-                                type="checkbox"
-                                className="w-4 h-4"
-                                checked={selectedItems.includes(cars.id)}
-                                onChange={() => handleSelectItem(cars.id)}
-                            />
-                            <img src={cars.carImage} alt={cars.carname} className="w-40 border rounded-2xl" />
+                    <li key={index} className="flex flex-col sm:flex-row items-center bg-gray-100 justify-between px-4 py-4 my-2 rounded">
+                        <div className="flex flex-col sm:flex-row items-center w-full sm:w-1/2 gap-4 mb-2 sm:mb-0">
+                            <div className="flex items-center gap-4">
+                                <input
+                                    type="checkbox"
+                                    className="w-4 h-4"
+                                    checked={selectedItems.includes(cars.id)}
+                                    onChange={() => handleSelectItem(cars.id)}
+                                />
+                                <img src={cars.carImage} alt={cars.carname} className="w-32 sm:w-40 border rounded-2xl" />
+                            </div>
                             <div>
-                                <h3 className="text-xl font-bold">{cars.carname}</h3>
-                                <h4>{cars.carDescription}</h4>
+                                <h3 className="text-base sm:text-xl font-bold">{cars.carname}</h3>
+                                <p className="text-sm sm:text-base">{cars.carDescription}</p>
                             </div>
                         </div>
-                        <div className="flex justify-around items-center w-1/2 text-center">
-                            <h2>{parsePriceDotFormat(cars.carprice).toLocaleString()} VND</h2>
-                            <div className="flex items-center space-x-2">
+
+                        <div className="flex flex-col sm:flex-row justify-around items-center w-full sm:w-1/2 text-center gap-2 sm:gap-0">
+                            <h2 className="w-full sm:w-1/4">{parsePriceDotFormat(cars.carprice).toLocaleString()} VND</h2>
+                            <div className="flex items-center justify-center w-full sm:w-1/4 space-x-2">
                                 <button onClick={() => updateQuantity(cars.id, -1)} className="bg-gray-300 px-2 rounded hover:bg-gray-400">-</button>
                                 <span>{cars.quantity}</span>
                                 <button onClick={() => updateQuantity(cars.id, 1)} className="bg-gray-300 px-2 rounded hover:bg-gray-400">+</button>
                             </div>
-                            <h2>{(cars.quantity * parsePriceDotFormat(cars.carprice)).toLocaleString()} VND</h2>
-                            <button onClick={() => handleDeleteItem(cars.id)} className="bg-red-600 text-white rounded-lg px-4 py-2 hover:bg-red-700">Xóa</button>
+                            <h2 className="w-full sm:w-1/4">{(cars.quantity * parsePriceDotFormat(cars.carprice)).toLocaleString()} VND</h2>
+                            <button
+                                onClick={() => handleDeleteItem(cars.id)}
+                                className="bg-red-600 text-white rounded-lg px-3 py-1 hover:bg-red-700 w-full sm:w-1/4"
+                            >
+                                Xóa
+                            </button>
                         </div>
                     </li>
                 ))}

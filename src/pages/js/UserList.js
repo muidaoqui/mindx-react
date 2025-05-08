@@ -195,11 +195,11 @@ function UserList() {
     
 
     return (
-        <div className="all">
+        <div className="all p-4 sm:p-6 md:p-8">
             <div className="w-full h-full mb-10">
-                <h2 className="text-center font-bold text-2xl my-10 text-cyan-500">Quản Lý Người Dùng</h2>
-                <div className="relative flex mb-4 gap-4 justify-between mx-4">
-                    <div className="flex gap-4">
+                <h2 className="text-center font-bold text-xl sm:text-2xl my-10 text-cyan-500">Quản Lý Người Dùng</h2>
+                <div className="relative flex flex-col lg:flex-row mb-4 gap-4 justify-between">
+                    <div className="flex flex-col lg:flex-row gap-4">
                         <div className="flex flex-col items-center gap-4">
                             {!showForm && (
                                 <button 
@@ -210,15 +210,15 @@ function UserList() {
                                 </button>
                             )}
                         </div>
-
+    
                         {showForm && (
                             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                                <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center bg-white p-6 rounded-xl shadow-lg z-50 w-96">
+                                <form onSubmit={handleSubmit} className="flex flex-col gap-4 items-center bg-white p-6 rounded-xl shadow-lg z-50 w-11/12 sm:w-96">
                                     <input className="border-2 border-black rounded-xl h-10 p-2 w-full" type="text" placeholder="Họ và tên" value={fullname} onChange={(e) => setFullname(e.target.value)} />
                                     <input className="border-2 border-black rounded-xl h-10 p-2 w-full" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={editingIndex !== null} />
                                     <input className="border-2 border-black rounded-xl h-10 p-2 w-full" type="password" placeholder="Mật khẩu" value={pass} onChange={(e) => setPass(e.target.value)} />
                                     <input className="border-2 border-black rounded-xl h-10 p-2 w-full" type="password" placeholder="Xác nhận mật khẩu" value={confPass} onChange={(e) => setConfPass(e.target.value)} />
-
+    
                                     <div className="flex gap-4">
                                         <button type="submit" className="border-2 border-black rounded-xl h-10 px-4 bg-green-500 font-bold">
                                             {editingIndex !== null ? "Cập nhật" : "Thêm"}
@@ -234,7 +234,7 @@ function UserList() {
                                 </form>
                             </div>
                         )}
-
+    
                         <div className="flex flex-col items-center gap-4">
                             <input
                                 type="search"
@@ -244,7 +244,8 @@ function UserList() {
                             />
                         </div>
                     </div>
-                    <div className="flex gap-4">
+    
+                    <div className="flex gap-4 justify-center lg:justify-end">
                         <div>
                             <input 
                                 type="file" 
@@ -270,14 +271,14 @@ function UserList() {
                         </div>
                     </div>
                 </div>
-
-                {message && <p style={{ color: msgColor }}>{message}</p>}
-
+    
+                {message && <p className={`text-${msgColor} font-medium my-2`}>{message}</p>}
+    
                 <div className="w-full border-2 border-black my-8 max-h-80 overflow-y-auto">
-                    <table className="w-full border-collapse">
+                    <table className="w-full border-collapse text-sm sm:text-base">
                         <thead className="bg-red-500 border-2 border-black sticky top-0 z-10">
                             <tr>
-                                <th className=" border-2 border-black">STT</th>
+                                <th className="border-2 border-black p-2">STT</th>
                                 <th className="p-2 border-2 border-black">Họ và Tên</th>
                                 <th className="p-2 border-2 border-black">Email</th>
                                 <th className="p-2 border-2 border-black">Hành động</th>
@@ -286,11 +287,11 @@ function UserList() {
                         <tbody className="text-center bg-white" onClick={() => setShowForm(true)}>
                             {filteredUsers.length > 0 ? (
                                 filteredUsers.map((user, index) => (
-                                    <tr className="border-2 border-black" key={index} onClick={() => handleEdit(index)}> 
+                                    <tr className="border-2 border-black hover:bg-gray-100" key={index} onClick={() => handleEdit(index)}> 
                                         <td className="p-2 border-2 border-black">{index + 1}</td>
                                         <td className="p-2 border-2 border-black">{user.fullname}</td>
                                         <td className="p-2 border-2 border-black">{user.email}</td>
-                                        <td className="p-2 border-2 border-black bg-red-500">
+                                        <td className="p-2 border-2 border-black bg-red-500 text-white">
                                             <button className="w-full h-full" onClick={(e) => { e.stopPropagation(); handleDelete(index); }}>Xóa</button>
                                         </td>
                                     </tr>
@@ -305,7 +306,7 @@ function UserList() {
                 </div>
             </div>
         </div>
-    );
+    );    
 }
 
 export default UserList;
