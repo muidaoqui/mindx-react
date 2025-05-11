@@ -6,17 +6,14 @@ import bg3 from '../../img/bg3.png';
 function StrategySection() {
   return (
     <section className="relative min-h-screen text-white flex items-center text-right snap-start">
-      {/* ẢNH NỀN */}
       <img
         src={bg3}
         alt="Background"
         className="absolute top-0 left-0 w-full h-full object-cover opacity-70 -z-10"
       />
 
-      {/* LỚP PHỦ ĐEN (nếu muốn) */}
       <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 -z-10" />
 
-      {/* NỘI DUNG */}
       <div className="w-full max-w-7xl mx-auto px-10 py-16 flex flex-col md:flex-row items-center absolute right-0 -translate-x-1/6 z-10">
         <div className="md:w-3/4">
           <h1 className="text-4xl text-cyan-400 font-bold mb-6">Strategy</h1>

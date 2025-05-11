@@ -26,7 +26,6 @@ function Mercedes() {
 
     return (
         <div className="font-serif">
-            {/* Header */}
             <div className="my-10 flex flex-col items-center px-4 text-center">
                 <img src={logo} alt="Logo Mercedes" className="w-32" />
                 <h1 className="text-3xl md:text-4xl my-6">Các dòng xe Mercedes-Benz</h1>
@@ -34,8 +33,6 @@ function Mercedes() {
                     Khám phá thế giới đa dạng về thương hiệu và mẫu xe của chúng tôi: Tại đây, bạn sẽ tìm thấy chiếc xe mơ ước của mình.
                 </h4>
             </div>
-
-            {/* Filter category buttons */}
             <div className="flex flex-wrap justify-center gap-3 w-full md:w-3/4 lg:w-1/2 mx-auto mt-6 px-4">
                 <button className="border-2 border-black p-3 md:p-4 hover:bg-black hover:text-white">
                     Mercedes-Benz
@@ -47,8 +44,6 @@ function Mercedes() {
                     MAYBACH
                 </button>
             </div>
-
-            {/* Toggle filter */}
             <div className="flex justify-center mt-8">
                 <button
                     className="border-2 border-black px-6 py-2 rounded hover:bg-black hover:text-white"
@@ -57,10 +52,7 @@ function Mercedes() {
                     {showFilters ? "Ẩn bộ lọc" : "Hiện bộ lọc"}
                 </button>
             </div>
-
-            {/* Main content layout */}
             <div className="flex flex-col lg:flex-row my-16 mx-4 lg:mx-20 gap-8">
-                {/* Sidebar filters */}
                 {showFilters && (
                     <div className="flex flex-col items-start gap-4 w-full lg:w-1/5">
                         <h2 className="text-xl md:text-2xl text-black">13 Mẫu</h2>
@@ -83,7 +75,6 @@ function Mercedes() {
                     </div>
                 )}
 
-                {/* Car list grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
                     {filteredCars.map((car, index) => (
                         <div

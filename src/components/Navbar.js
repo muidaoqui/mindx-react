@@ -7,15 +7,12 @@ function Navbar() {
   return (
     <div className="px-4 bg-gray-500 w-full">
       <nav className="flex items-center justify-between py-4 w-full">
-        {/* Logo */}
         <div className="flex items-center gap-4">
           <a href="/home">
             <img src={logo} alt="Logo" className="w-12 h-12 md:w-16 md:h-16 rounded-xl" />
           </a>
           <span className="hidden md:inline text-2xl font-bold text-cyan-400">MD Autohunt</span>
         </div>
-
-        {/* Search Box */}
         <div className="relative flex-1 mx-4 md:mx-0 md:flex-none">
           <input
             type="text"
@@ -26,8 +23,6 @@ function Navbar() {
             <i className="fa fa-search"></i>
           </button>
         </div>
-
-        {/* Icons */}
         <div className="flex items-center space-x-4 text-xl">
           {loggedInEmail?.toLowerCase() === "muidao156@gmail.com" && (
             <div className="hidden md:flex space-x-4">
@@ -45,15 +40,11 @@ function Navbar() {
           <a href="/login" className="text-yellow-500 hover:text-cyan-600">
             <i className="fa-solid fa-user"></i>
           </a>
-
-          {/* Hamburger menu */}
           <button className="md:hidden text-3xl text-yellow-500 hover:text-cyan-600 ml-2" onClick={() => setIsOpen(!isOpen)}>
             ☰
           </button>
         </div>
       </nav>
-
-      {/* Mobile Menu */}
       <div
         className={`overflow-hidden transition-all duration-500 ease-in-out md:hidden ${
           isOpen ? "max-h-[1000px] py-4" : "max-h-0"
@@ -98,8 +89,6 @@ function Navbar() {
           )}
         </ul>
       </div>
-
-      {/* Desktop Menu */}
       <ul className="hidden md:flex md:flex-row md:space-x-6 text-lg font-semibold justify-center py-2 text-white">
         {[
           { name: "Volvo", link: "/volvo" },
